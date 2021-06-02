@@ -25,7 +25,11 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 {
-    Route::get('danh-sach-giay-phep', [GPNuocMatController::class, 'listHydroelectricLicense']);
+    Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allLicenses']);
+    Route::get('dem-so-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
+    
+
+    Route::get('danh-sach-giay-phep-thuy-dien', [GPNuocMatController::class, 'listHydroelectricLicense']);
 
     Route::get('hang-muc-cong-trinh/{id_gp}', [GPNuocMatController::class, 'constructionItems']);
 
