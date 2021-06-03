@@ -28,7 +28,11 @@ class GPNuocMatController extends Controller
         $allHetHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','<',$currentDate)->get()->count();
 
         // Hydroelectric License
+        $hydroelectricGPDaCap = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->get()->count();
         $hydroelectricChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loai_ct', 'thuy-dien')->get()->count();
+        $hydroelectricConHieuLuc = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->where('hieu_luc_den','>',$currentDate)->get()->count();
+        $hydroelectricSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('hieu_luc_den','<',Carbon::now()->addDays(60))->where('loai_ct', 'thuy-dien')->get()->count();
+        $hydroelectricHetHieuLuc = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->where('hieu_luc_den','<',$currentDate)->get()->count();
 
         return [
             'tat_ca_gp_nuoc_mat' => [
@@ -37,11 +41,12 @@ class GPNuocMatController extends Controller
                 'sap_het_hieu_luc' => ($allSapHetHieuLuc-$allHetHieuLuc),
                 'het_hieu_luc' => $allHetHieuLuc,
             ],
-            'thuy-dien' => [
-                'chua_phe_duyet' => '1',
-                'con_hieu_luc' => '1',
-                'sap_het_hieu_luc' => '1',
-                'het_hieu_luc' => '1',
+            'thuy_dien' => [
+                'giay_phep_da_cap' => $hydroelectricGPDaCap,
+                'chua_phe_duyet' => $hydroelectricChuaDuocDuyet,
+                'con_hieu_luc' => $hydroelectricConHieuLuc,
+                'sap_het_hieu_luc' => ($hydroelectricSapHetHieuLuc-$hydroelectricHetHieuLuc),
+                'het_hieu_luc' => $hydroelectricHetHieuLuc,
             ],
         ];
     }
