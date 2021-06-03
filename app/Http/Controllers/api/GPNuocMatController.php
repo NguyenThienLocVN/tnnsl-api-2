@@ -18,23 +18,37 @@ class GPNuocMatController extends Controller
 
     // dem so giay phep
     public function countLicenceNumber(){
+
         $currentDate = Carbon::now();
-        $chuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
-        $conHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','>',$currentDate)->get()->count();
-        $sapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('hieu_luc_den','<',Carbon::now()->addDays(60))->get()->count();
-        $hetHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','<',$currentDate)->get()->count();
+
+        // All License
+        $allChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
+        $allConHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','>',$currentDate)->get()->count();
+        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('hieu_luc_den','<',Carbon::now()->addDays(60))->get()->count();
+        $allHetHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','<',$currentDate)->get()->count();
+
+        // Hydroelectric License
+        $hydroelectricChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loai_ct', 'thuy-dien')->get()->count();
 
         return [
-            'chua_phe_duyet' => $chuaDuocDuyet,
-            'con_hieu_luc' => $conHieuLuc,
-            'sap_het_hieu_luc' => ($sapHetHieuLuc-$hetHieuLuc),
-            'het_hieu_luc' => $hetHieuLuc,
+            'tat_ca_gp_nuoc_mat' => [
+                'chua_phe_duyet' => $allChuaDuocDuyet,
+                'con_hieu_luc' => $allConHieuLuc,
+                'sap_het_hieu_luc' => ($allSapHetHieuLuc-$allHetHieuLuc),
+                'het_hieu_luc' => $allHetHieuLuc,
+            ],
+            'thuy-dien' => [
+                'chua_phe_duyet' => '1',
+                'con_hieu_luc' => '1',
+                'sap_het_hieu_luc' => '1',
+                'het_hieu_luc' => '1',
+            ],
         ];
     }
 
     // danh sach giay phep thuy dien
     public function listHydroelectricLicense(){
-        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->get();
+        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->get();
         return $constructs;
     }
 
@@ -44,7 +58,7 @@ class GPNuocMatController extends Controller
         return $license->hang_muc_ct;
     }
 
-    // Hang muc cong trinh
+    // luu_luong_theo_muc_dich_sd
     public function TrafficAccordingToThePurposeOfUse($id_gp){
         $license =  GPNuocMat::find($id_gp);
         return $license->luu_luong_theo_muc_dich_sd;
