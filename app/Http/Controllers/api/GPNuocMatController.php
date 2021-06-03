@@ -52,10 +52,10 @@ class GPNuocMatController extends Controller
         return $constructs;
     }
 
-    // Hang muc cong trinh
-    public function constructionItems($id_gp){
-        $license =  GPNuocMat::find($id_gp);
-        return $license->hang_muc_ct;
+    // Thong tin giay phep cong trinh thuy dien
+    public function hydroelectricLicenseInfo($id_gp){
+        $construct = GPNuocMat::with('hang_muc_ct')->find($id_gp);
+        return $construct;
     }
 
     // luu_luong_theo_muc_dich_sd
