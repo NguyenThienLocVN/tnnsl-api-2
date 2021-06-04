@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\GPNuocMat;
+use App\Models\ChatLuongNuocMatQCVN;
 use Carbon\Carbon;
 
 class GPNuocMatController extends Controller
@@ -53,7 +54,7 @@ class GPNuocMatController extends Controller
 
     // danh sach giay phep thuy dien
     public function listHydroelectricLicense(){
-        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->get();
+        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->with('luu_luong_theo_muc_dich_sd')->get();
         return $constructs;
     }
 
@@ -67,5 +68,10 @@ class GPNuocMatController extends Controller
     public function TrafficAccordingToThePurposeOfUse($id_gp){
         $license =  GPNuocMat::find($id_gp);
         return $license->luu_luong_theo_muc_dich_sd;
+    }
+
+    // chat_luong_nuoc_mat_qcvn
+    public function chat_luong_nuoc_mat_qcvn(){
+        return ChatLuongNuocMatQCVN::all();
     }
 }
