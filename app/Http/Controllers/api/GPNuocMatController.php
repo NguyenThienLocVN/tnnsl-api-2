@@ -54,7 +54,7 @@ class GPNuocMatController extends Controller
 
     // danh sach giay phep thuy dien
     public function listHydroelectricLicense(){
-        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->with('luu_luong_theo_muc_dich_sd')->get();
+        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
         return $constructs;
     }
 

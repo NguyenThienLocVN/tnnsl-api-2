@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\HangMucCongTrinh;
 use App\Models\LuuLuongTheoMucDichSD;
+use App\Models\TaiLieu;
 
 class GPNuocMat extends Model
 {
@@ -21,6 +22,11 @@ class GPNuocMat extends Model
     public function luu_luong_theo_muc_dich_sd()
     {
         return $this->hasMany(LuuLuongTheoMucDichSD::class, 'id_gp', 'id');
+    }
+
+    public function tai_lieu()
+    {
+        return $this->hasMany(TaiLieu::class, 'id_gp', 'id');
     }
 
     public function getLoaigiayphepAttribute()

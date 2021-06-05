@@ -34,6 +34,8 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 
     Route::get('luu-luong-theo-muc-dich-sd/{id_gp}', [GPNuocMatController::class, 'TrafficAccordingToThePurposeOfUse']);
 
+    Route::get('tai-lieu/{id_gp}', [GPNuocMatController::class, 'tai_lieu']);
+
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
     
 });
