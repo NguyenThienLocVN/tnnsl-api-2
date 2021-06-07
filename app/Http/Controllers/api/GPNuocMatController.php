@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\GPNuocMat;
 use App\Models\ChatLuongNuocMatQCVN;
+use App\Models\HangMucCongTrinh;
 use Carbon\Carbon;
 
 class GPNuocMatController extends Controller
@@ -73,5 +74,12 @@ class GPNuocMatController extends Controller
     // chat_luong_nuoc_mat_qcvn
     public function chat_luong_nuoc_mat_qcvn(){
         return ChatLuongNuocMatQCVN::all();
+    }
+
+    // Lay toa do lat long cua cong trinh thuy dien
+    public function getLocationHydroelectric(){
+        $constructIds = GPNuocMat::where('loai_ct', 'thuy-dien')->pluck('id');
+        $locations = HangMucCongTrinh::select('latitude','longitude')->whereIn('id_gp', $constructIds)->where('toa_do_chinh', 1)->get();
+        return $locations;
     }
 }

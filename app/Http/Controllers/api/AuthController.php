@@ -15,7 +15,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $messages = [
-            'name.required' => 'Vui lòng nhập tên đăng nhập',
+            'name.required' => 'Vui lòng nhập tên',
+            'username.required' => 'Vui lòng nhập tên đăng nhập',
             'username.unique' => 'Tên đăng nhập đã tồn tại',
             'email.required' => 'Vui lòng nhập email',
             'email.unique' => 'Email đã tồn tại',
@@ -23,11 +24,13 @@ class AuthController extends Controller
             'phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
             'phone.required' => 'Vui lòng nhập số điện thoại',
             'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu tối thiểu 6 ký tự',
             'address.required' => 'Vui lòng nhập địa chỉ',
         ];
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email',
             'username' => 'required|unique:users,username',
             'password' => 'required|min:6',
@@ -55,7 +58,7 @@ class AuthController extends Controller
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
             
-            return response()->json(['remember_token' => $token ]);
+            return response()->json(['success_message' => 'Đăng ký thành công, vui lòng kích hoạt tài khoản !' ]);
         }      
     }
 
