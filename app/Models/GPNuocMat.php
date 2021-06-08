@@ -41,4 +41,12 @@ class GPNuocMat extends Model
             return "";
         }
     }
+
+    public function getMainCategoryForHydroelectric()
+    {
+        if($this->loai_ct == 'thuy-dien')
+        {
+            return $this->hang_muc_ct()->where('toa_do_chinh', 1);
+        }
+    }
 }

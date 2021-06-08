@@ -77,9 +77,17 @@ class GPNuocMatController extends Controller
     }
 
     // Lay toa do lat long cua cong trinh thuy dien
-    public function getLocationHydroelectric(){
-        $constructIds = GPNuocMat::where('loai_ct', 'thuy-dien')->pluck('id');
-        $locations = HangMucCongTrinh::select('latitude','longitude')->whereIn('id_gp', $constructIds)->where('toa_do_chinh', 1)->get();
-        return $locations;
+    public function getInfoHydroelectricForMap(){
+        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->get()->toArray();
+        $hydroelectricIds = GPNuocMat::where('loai_ct', 'thuy-dien')->pluck('id');
+
+        $constructItems = HangMucCongTrinh::whereIn('id_gp', $hydroelectricIds)->where('toa_do_chinh', 1)->get()->toArray();
+
+        for($i = 0; $i < count($constructs); $i++)
+        {
+            array_push($constructs[$i], $constructItems[$i]);
+        }
+        
+        return $constructs;
     }
 }

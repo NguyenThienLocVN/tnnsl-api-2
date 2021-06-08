@@ -38,5 +38,5 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
     
-    Route::get('toa-do-thuy-dien', [GPNuocMatController::class, 'getLocationHydroelectric']);
+    Route::get('thong-tin-ban-do-thuy-dien', [GPNuocMatController::class, 'getInfoHydroelectricForMap']);
 });
