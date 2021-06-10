@@ -25,16 +25,17 @@ class GPNuocMatController extends Controller
 
         // All License
         $allChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
-        $allConHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','>',$currentDate)->get()->count();
-        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('hieu_luc_den','<',Carbon::now()->addDays(60))->get()->count();
-        $allHetHieuLuc = GPNuocMat::where('status', '1')->where('hieu_luc_den','<',$currentDate)->get()->count();
+        $allConHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
+        $allHetHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
         // Hydroelectric License
-        $hydroelectricGPDaCap = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->get()->count();
-        $hydroelectricChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loai_ct', 'thuy-dien')->get()->count();
-        $hydroelectricConHieuLuc = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->where('hieu_luc_den','>',$currentDate)->get()->count();
-        $hydroelectricSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('hieu_luc_den','<',Carbon::now()->addDays(60))->where('loai_ct', 'thuy-dien')->get()->count();
-        $hydroelectricHetHieuLuc = GPNuocMat::where('status', '1')->where('loai_ct', 'thuy-dien')->where('hieu_luc_den','<',$currentDate)->get()->count();
+        $allHydroelectric = GPNuocMat::where('loaihinh_congtrinh_ktsd','thuy-dien')->count();
+        $hydroelectricGPDaCap = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->count();
+        $hydroelectricChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->count();
+        $hydroelectricConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $hydroelectricSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->count();
+        $hydroelectricHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
         return [
             'tat_ca_gp_nuoc_mat' => [
@@ -44,6 +45,7 @@ class GPNuocMatController extends Controller
                 'het_hieu_luc' => $allHetHieuLuc,
             ],
             'thuy_dien' => [
+                'tat_ca_giay_phep' => $allHydroelectric,
                 'giay_phep_da_cap' => $hydroelectricGPDaCap,
                 'chua_phe_duyet' => $hydroelectricChuaDuocDuyet,
                 'con_hieu_luc' => $hydroelectricConHieuLuc,
@@ -55,7 +57,7 @@ class GPNuocMatController extends Controller
 
     // danh sach giay phep thuy dien
     public function listHydroelectricLicense(){
-        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
         return $constructs;
     }
 
@@ -78,10 +80,10 @@ class GPNuocMatController extends Controller
 
     // Lay toa do lat long cua cong trinh thuy dien
     public function getInfoHydroelectricForMap(){
-        $constructs = GPNuocMat::where('loai_ct', 'thuy-dien')->get()->toArray();
-        $hydroelectricIds = GPNuocMat::where('loai_ct', 'thuy-dien')->pluck('id');
+        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->toArray();
+        $hydroelectricIds = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->pluck('id');
 
-        $constructItems = HangMucCongTrinh::whereIn('id_gp', $hydroelectricIds)->where('toa_do_chinh', 1)->get()->toArray();
+        $constructItems = HangMucCongTrinh::whereIn('idgiayphep', $hydroelectricIds)->where('toa_do_chinh', 1)->get()->toArray();
 
         for($i = 0; $i < count($constructs); $i++)
         {

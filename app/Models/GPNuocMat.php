@@ -11,22 +11,22 @@ use App\Models\TaiLieu;
 class GPNuocMat extends Model
 {
     use HasFactory;
-    public $table = "gp_nuoc_mat";
+    public $table = "gp_nuocmat";
     protected $appends = ['loaigiayphep'];
 
     public function hang_muc_ct()
     {
-        return $this->hasMany(HangMucCongTrinh::class, 'id_gp', 'id');
+        return $this->hasMany(HangMucCongTrinh::class, 'idgiayphep', 'id');
     }
 
     public function luu_luong_theo_muc_dich_sd()
     {
-        return $this->hasMany(LuuLuongTheoMucDichSD::class, 'id_gp', 'id');
+        return $this->hasMany(LuuLuongTheoMucDichSD::class, 'idgiayphep', 'id');
     }
 
     public function tai_lieu()
     {
-        return $this->hasMany(TaiLieu::class, 'id_gp', 'id');
+        return $this->hasMany(TaiLieu::class, 'idgiayphep', 'id');
     }
 
     public function getLoaigiayphepAttribute()
