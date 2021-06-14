@@ -31,11 +31,11 @@ class GPNuocMat extends Model
 
     public function getLoaigiayphepAttribute()
     {
-        if($this->loai_gp == "cap-moi"){
+        if($this->gp_loaigiayphep == "cap-moi"){
             return "Cấp mới";
-        }else if($this->loai_ct == "cap-lai"){
+        }else if($this->gp_loaigiayphep == "cap-lai"){
             return "Cấp lại";
-        }else if($this->loai_ct == "thu-hoi"){
+        }else if($this->gp_loaigiayphep == "thu-hoi"){
             return "Thu hồi";
         }else{
             return "";
@@ -44,7 +44,7 @@ class GPNuocMat extends Model
 
     public function getMainCategoryForHydroelectric()
     {
-        if($this->loai_ct == 'thuy-dien')
+        if($this->loaihinh_congtrinh_ktsd == 'thuy-dien')
         {
             return $this->hang_muc_ct()->where('toa_do_chinh', 1);
         }
