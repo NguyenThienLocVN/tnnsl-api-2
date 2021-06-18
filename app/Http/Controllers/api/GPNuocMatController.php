@@ -12,10 +12,38 @@ use Carbon\Carbon;
 
 class GPNuocMatController extends Controller
 {
-    // list all license
-    public function allLicenses(){
-        $constructs = GPNuocMat::all();
-        return $constructs;
+    // list all Face water license
+    public function allFaceWaterLicenses(){
+        $license = GPNuocMat::all();
+        // gp thủy điện
+        $gp_thuydien = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp hồ chứa
+        $gp_hochua = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp trạm bơm
+        $gp_trambom = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp đập/ hệ thống thủy lợi
+        $gp_dap = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp Cống
+        $gp_cong = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get(); 
+        // gp trạm cấp nước
+        $gp_tramcapnuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp nhà máy nước
+        $gp_nhamaynuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        // gp công trình khác
+        $gp_congtrinhkhac = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        return [
+            'giayphep' => [
+                'gp_all' => $license,
+                'gp_thuydien' => $gp_thuydien,
+                'gp_hochua' => $gp_hochua,
+                'gp_dap' => $gp_dap,
+                'gp_cong' => $gp_cong,
+                'gp_trambom' => $gp_trambom,
+                'gp_tramcapnuoc' => $gp_tramcapnuoc,
+                'gp_nhamaynuoc' => $gp_nhamaynuoc,
+                'gp_congtrinhkhac' => $gp_congtrinhkhac,
+            ]
+        ];
     }
 
     // countLicenceNumber
@@ -23,11 +51,11 @@ class GPNuocMatController extends Controller
 
         $currentDate = Carbon::now();
 
-        // All License
+        // gp chưa được duyệt
         $allChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
-
+        // gp còn hiệu lực
         $allConHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
-
+        // gp sắp hết hiệu lực
         $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
 
         $allHetHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
@@ -67,14 +95,29 @@ class GPNuocMatController extends Controller
 
     // listHydroelectricLicense 
     public function listHydroelectricLicense(){
-        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
-        return $constructs;
+        $license = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        return $license;
+    }
+    // listReservoirLicense 
+    public function listReservoirLicense(){
+        $license = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        return $license;
+    }
+    // listPumpingStationLicense 
+    public function listPumpingStationLicense(){
+        $license = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        return $license;
+    }
+    // listWaterSupplyStationLicense 
+    public function listWaterSupplyStationLicense(){
+        $license = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        return $license;
     }
 
     // hydroelectricLicenseInfo
     public function hydroelectricLicenseInfo($id_gp){
-        $construct = GPNuocMat::with('hang_muc_ct')->find($id_gp);
-        return $construct;
+        $LicenseInfo = GPNuocMat::with('hang_muc_ct')->find($id_gp);
+        return $LicenseInfo;
     }
 
     // TrafficAccordingToThePurposeOfUse

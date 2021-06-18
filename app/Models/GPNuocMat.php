@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\HangMucCongTrinh;
 use App\Models\LuuLuongTheoMucDichSD;
 use App\Models\TaiLieu;
+use Carbon\Carbon;
 
 class GPNuocMat extends Model
 {
     use HasFactory;
     public $table = "gp_nuocmat";
-    protected $appends = ['loaigiayphep'];
+    protected $appends = ['loaigiayphep','hieulucgiayphep'];
 
     public function hang_muc_ct()
     {
@@ -42,11 +43,23 @@ class GPNuocMat extends Model
         }
     }
 
-    public function getMainCategoryForHydroelectric()
+    public function getHieulucgiayphepAttribute()
     {
-        if($this->loaihinh_congtrinh_ktsd == 'thuy-dien')
-        {
-            return $this->hang_muc_ct()->where('toa_do_chinh', 1);
+        $currentDate = Carbon::now();
+
+        $licenseDate = Carbon::parse($this->gp_ngayhethan);
+        $dateSapHetHan = Carbon::now()->addDays(60);
+
+        if($this->status == 0 || $this->status == '0'){
+            return 'chuaduocduyet';
+        }else if($currentDate < $licenseDate){
+            if($licenseDate < $dateSapHetHan && $licenseDate == $currentDate){
+                return 'saphethieuluc';
+            }else{
+                return 'conhieuluc';
+            }
+        }else if($currentDate > $licenseDate){
+            return 'hethieuluc';
         }
     }
 }

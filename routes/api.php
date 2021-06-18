@@ -25,7 +25,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 {
-    Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allLicenses']);
+    Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-so-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
 
 	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);    
@@ -37,6 +37,4 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
     Route::get('tai-lieu/{id_gp}', [GPNuocMatController::class, 'tai_lieu']);
 
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
-    
-    Route::get('thong-tin-ban-do-thuy-dien', [GPNuocMatController::class, 'getInfoHydroelectricForMap']);
 });
