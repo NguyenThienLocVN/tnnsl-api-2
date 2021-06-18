@@ -90,15 +90,7 @@ class GPNuocMatController extends Controller
 
     // Lay toa do lat long cua cong trinh thuy dien
     public function getInfoHydroelectricForMap(){
-        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->toArray();
-        $hydroelectricIds = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->pluck('id');
-
-        $constructItems = HangMucCongTrinh::whereIn('idgiayphep', $hydroelectricIds)->where('toa_do_chinh', 1)->get()->toArray();
-
-        for($i = 0; $i < count($constructs); $i++)
-        {
-            array_push($constructs[$i], $constructItems[$i]);
-        }
+        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->get()->toArray();
         
         return $constructs;
     }
