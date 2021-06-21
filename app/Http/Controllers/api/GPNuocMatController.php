@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\GPNuocMat;
-use App\Models\ChatLuongNuocMatQCVN;
-use App\Models\HangMucCongTrinh;
 use Carbon\Carbon;
 
 class GPNuocMatController extends Controller
@@ -49,6 +47,7 @@ class GPNuocMatController extends Controller
 
         $currentDate = Carbon::now();
 
+        $allgp = GPNuocMat::all()->count();
         // gp chưa được duyệt
         $allChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
         // gp còn hiệu lực
@@ -166,6 +165,7 @@ class GPNuocMatController extends Controller
 
         return [
             'tat_ca_gp_nuoc_mat' => [
+                'allgp' => $allgp,
                 'chua_phe_duyet' => $allChuaDuocDuyet,
                 'con_hieu_luc' => $allConHieuLuc,
                 'sap_het_hieu_luc' => $allSapHetHieuLuc,
