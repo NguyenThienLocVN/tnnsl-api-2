@@ -36,9 +36,7 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
     Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-so-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
 
-	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);    
-
-    Route::get('danh-sach-giay-phep-thuy-dien', [GPNuocMatController::class, 'listHydroelectricLicense']);
+	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
 
     Route::get('luu-luong-theo-muc-dich-sd/{id_gp}', [GPNuocMatController::class, 'TrafficAccordingToThePurposeOfUse']);
 
@@ -50,5 +48,6 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
 {
     Route::get('danh-sach-giay-phep', [GPKTSDNuocDuoiDatController::class, 'license']);
+    Route::get('giay-phep-khai-thac/{id_gp}', [GPKTSDNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTSDNuocDuoiDatController::class, 'countLicense']);
 });

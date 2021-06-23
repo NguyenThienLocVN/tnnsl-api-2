@@ -11,8 +11,12 @@ class GPKTSDNuocDuoiDatController extends Controller
 {
     public function license()
     {
-        $license = GPKTSDNuocDuoiDat::all();
-        return $license;
+        $license = GPKTSDNuocDuoiDat::paginate(10);
+        $sumLicense = GPKTSDNuocDuoiDat::all()->count();
+        return [
+            'gp_ktnuocduoidat' => $license,
+            'tonggp_ktnuocduoidat' => $sumLicense,
+        ];
     }
     public function countLicense()
     {
@@ -41,5 +45,9 @@ class GPKTSDNuocDuoiDatController extends Controller
                 'het_hieu_luc' => $gp_ktsdnuocduoidatHetHieuLuc,
             ],
         ];
+    }
+    public function singleLicense($id_gp){
+        $LicenseInfo = GPKTSDNuocDuoiDat::find($id_gp);
+        return $LicenseInfo;
     }
 }
