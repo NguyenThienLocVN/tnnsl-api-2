@@ -16,31 +16,52 @@ class GPNuocMatController extends Controller
         // gp thủy điện
         $gp_thuydien = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
         $tonggp_thuydien = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp hồ chứa
-        $gp_hochua = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_hochua = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_hochua = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp trạm bơm
-        $gp_trambom = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_trambom = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_trambom = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp đập/ hệ thống thủy lợi
-        $gp_dap = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_dap = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_dap = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp Cống
-        $gp_cong = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get(); 
+        $gp_cong = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_cong = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp trạm cấp nước
-        $gp_tramcapnuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_tramcapnuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_tramcapnuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp nhà máy nước
-        $gp_nhamaynuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_nhamaynuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_nhamaynuoc = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
+
         // gp công trình khác
-        $gp_congtrinhkhac = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->get();
+        $gp_congtrinhkhac = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
+        $tonggp_congtrinhkhac = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
         return [
                 'gp_all' => $license,
                 'gp_thuydien' => $gp_thuydien,
                 'tonggp_thuydien' => $tonggp_thuydien,
                 'gp_hochua' => $gp_hochua,
+                'tonggp_hochua' => $tonggp_hochua,
                 'gp_dap' => $gp_dap,
+                'tonggp_dap' => $tonggp_dap,
                 'gp_cong' => $gp_cong,
+                'tonggp_cong' => $tonggp_cong,
                 'gp_trambom' => $gp_trambom,
+                'tonggp_trambom' => $tonggp_trambom,
                 'gp_tramcapnuoc' => $gp_tramcapnuoc,
+                'tonggp_tramcapnuoc' => $tonggp_tramcapnuoc,
                 'gp_nhamaynuoc' => $gp_nhamaynuoc,
+                'tonggp_nhamaynuoc' => $tonggp_nhamaynuoc,
                 'gp_congtrinhkhac' => $gp_congtrinhkhac,
+                'tonggp_congtrinhkhac' => $tonggp_congtrinhkhac
         ];
     }
 
