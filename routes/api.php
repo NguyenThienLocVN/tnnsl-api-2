@@ -50,4 +50,5 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
     Route::get('danh-sach-giay-phep', [GPKTSDNuocDuoiDatController::class, 'license']);
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTSDNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTSDNuocDuoiDatController::class, 'countLicense']);
+    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTSDNuocDuoiDatController::class, 'NewLicenseManagement']);
 });

@@ -52,7 +52,7 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'address' => $request->address,
                 'phone' => $request->phone,
-                'role' => 0,
+                'role' => 'user',
                 'status' => 0,
                 'type' => $request->type
             ]);
