@@ -111,7 +111,7 @@ class GPNuocMatController extends Controller
 
         $gp_dapGPDaCap = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'dap')->get()->count();
 
-        $gp_dapChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loaihinh_congtrinh_ktsd', 'dap')->get()->count();
+        $gp_dapChuaDuocDuyet = GPNuocMat::whereIn('status', [0,2,3])->where('loaihinh_congtrinh_ktsd', 'dap')->get()->count();
 
         $gp_dapConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'dap')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
@@ -124,7 +124,7 @@ class GPNuocMatController extends Controller
 
         $gp_congGPDaCap = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong')->get()->count();
 
-        $gp_congChuaDuocDuyet = GPNuocMat::where('status', '0')->where('loaihinh_congtrinh_ktsd', 'cong')->get()->count();
+        $gp_congChuaDuocDuyet = GPNuocMat::whereIn('status', [0,2,3])->where('loaihinh_congtrinh_ktsd', 'cong')->get()->count();
 
         $gp_congConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
