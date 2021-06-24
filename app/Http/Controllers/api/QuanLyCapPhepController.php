@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GPNuocMat;
-use App\Models\GPKTSDNuocDuoiDat;
+use App\Models\GPKTNuocDuoiDat;
 use Carbon\Carbon;
 
 class QuanLyCapPhepController extends Controller
@@ -14,17 +14,17 @@ class QuanLyCapPhepController extends Controller
     {
         $currentDate = Carbon::now();
 
-        $allgp_ktsdnuocduoidat = GPKTSDNuocDuoiDat::all()->count();
+        $allgp_ktsdnuocduoidat = GPKTNuocDuoiDat::all()->count();
 
-        $gp_ktsdnuocduoidatGPDaCap = GPKTSDNuocDuoiDat::where('status', '1')->get()->count();
+        $gp_ktsdnuocduoidatGPDaCap = GPKTNuocDuoiDat::where('status', '1')->get()->count();
 
-        $gp_ktsdnuocduoidatChuaDuocDuyet = GPKTSDNuocDuoiDat::where('status', '0')->get()->count();
+        $gp_ktsdnuocduoidatChuaDuocDuyet = GPKTNuocDuoiDat::where('status', '0')->get()->count();
 
-        $gp_ktsdnuocduoidatConHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_ktsdnuocduoidatConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_ktsdnuocduoidatSapHetHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
+        $gp_ktsdnuocduoidatSapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
 
-        $gp_ktsdnuocduoidatHetHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_ktsdnuocduoidatHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
         $allgp_nuocmat = GPNuocMat::all()->count();
         $gp_nuocmatGPDaCap = GPNuocMat::where('status', '1')->get()->count();
@@ -68,12 +68,12 @@ class QuanLyCapPhepController extends Controller
         $gp_nuocmat2020 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
 
         // gp ktsdnuocduoidat
-        $gp_nuocduoidat2015 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
-        $gp_nuocduoidat2016 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
-        $gp_nuocduoidat2017 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
-        $gp_nuocduoidat2018 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
-        $gp_nuocduoidat2019 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
-        $gp_nuocduoidat2020 = GPKTSDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
+        $gp_nuocduoidat2015 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
+        $gp_nuocduoidat2016 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
+        $gp_nuocduoidat2017 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
+        $gp_nuocduoidat2018 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
+        $gp_nuocduoidat2019 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
+        $gp_nuocduoidat2020 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
 
         return[
             'gp_nuocmat' => [

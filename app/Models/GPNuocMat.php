@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\HangMucCongTrinh;
+use App\Models\NuocMatHangMuc;
 use App\Models\LuuLuongTheoMucDichSD;
 use App\Models\TaiLieu;
 use Carbon\Carbon;
@@ -17,7 +17,7 @@ class GPNuocMat extends Model
 
     public function hang_muc_ct()
     {
-        return $this->hasMany(HangMucCongTrinh::class, 'idgiayphep', 'id');
+        return $this->hasMany(NuocMatHangMuc::class, 'idgiayphep', 'id');
     }
 
     public function luu_luong_theo_muc_dich_sd()

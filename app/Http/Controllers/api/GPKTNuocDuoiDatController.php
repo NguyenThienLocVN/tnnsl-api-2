@@ -4,16 +4,16 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\GPKTSDNuocDuoiDat;
+use App\Models\GPKTNuocDuoiDat;
 use App\Models\User;
 use Carbon\Carbon;
 
-class GPKTSDNuocDuoiDatController extends Controller
+class GPKTNuocDuoiDatController extends Controller
 {
     public function license()
     {
-        $license = GPKTSDNuocDuoiDat::paginate(10);
-        $sumLicense = GPKTSDNuocDuoiDat::all()->count();
+        $license = GPKTNuocDuoiDat::with('hang_muc_ct')->paginate(10);
+        $sumLicense = GPKTNuocDuoiDat::all()->count();
         return [
             'gp_ktnuocduoidat' => $license,
             'tonggp_ktnuocduoidat' => $sumLicense,
@@ -23,15 +23,15 @@ class GPKTSDNuocDuoiDatController extends Controller
     {
         $currentDate = Carbon::now();
 
-        $allgp_ktsdnuocduoidat = GPKTSDNuocDuoiDat::all()->count();
+        $allgp_ktsdnuocduoidat = GPKTNuocDuoiDat::all()->count();
 
-        $gp_ktsdnuocduoidatGPDaCap = GPKTSDNuocDuoiDat::where('status', '1')->get()->count();
+        $gp_ktsdnuocduoidatGPDaCap = GPKTNuocDuoiDat::where('status', '1')->get()->count();
 
-        $gp_ktsdnuocduoidatConHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_ktsdnuocduoidatConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_ktsdnuocduoidatSapHetHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
+        $gp_ktsdnuocduoidatSapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
 
-        $gp_ktsdnuocduoidatHetHieuLuc = GPKTSDNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_ktsdnuocduoidatHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
 
         return [
@@ -46,13 +46,13 @@ class GPKTSDNuocDuoiDatController extends Controller
         ];
     }
     public function singleLicense($id_gp){
-        $LicenseInfo = GPKTSDNuocDuoiDat::find($id_gp);
+        $LicenseInfo = GPKTNuocDuoiDat::where('id', $id_gp)->with('hang_muc_ct')->get();
         return $LicenseInfo;
     }
     public function NewLicenseManagement($user_id)
     {
-        $roleAdmin = GPKTSDNuocDuoiDat::whereIn('status', [0,2,3])->paginate(10);
-        $roleUser = GPKTSDNuocDuoiDat::where('user_id', $user_id)->paginate(10);
+        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->paginate(10);
+        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->paginate(10);
         return[
             'role_admin' => $roleAdmin,
             'role_user' => $roleUser,

@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon; 
+use App\Models\NuocDuoiDatGieng;
+use Carbon\Carbon;
 
-class GPKTSDNuocDuoiDat extends Model
+class GPKTNuocDuoiDat extends Model
 {
     use HasFactory;
-    public $table = "gp_ktsdnuocduoidat";
+    public $table = "gp_ktnuocduoidat";
     protected $appends = ['hieulucgiayphep'];
+
     public function getHieulucgiayphepAttribute()
     {
         $currentDate = Carbon::now();
@@ -29,5 +31,10 @@ class GPKTSDNuocDuoiDat extends Model
         }else if($currentDate > $licenseDate){
             return 'hethieuluc';
         }
+    }
+
+    public function hang_muc_ct()
+    {
+        return $this->hasMany(NuocDuoiDatGieng::class, 'idgiayphep', 'id');
     }
 }

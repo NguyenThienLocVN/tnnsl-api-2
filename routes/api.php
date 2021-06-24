@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\QuanLyCapPhepController;
 use App\Http\Controllers\api\GPNuocMatController;
-use App\Http\Controllers\api\GPKTSDNuocDuoiDatController;
+use App\Http\Controllers\api\GPKTNuocDuoiDatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,8 +47,8 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
 {
-    Route::get('danh-sach-giay-phep', [GPKTSDNuocDuoiDatController::class, 'license']);
-    Route::get('giay-phep-khai-thac/{id_gp}', [GPKTSDNuocDuoiDatController::class, 'singleLicense']);
-    Route::get('dem-giay-phep', [GPKTSDNuocDuoiDatController::class, 'countLicense']);
-    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTSDNuocDuoiDatController::class, 'NewLicenseManagement']);
+    Route::get('danh-sach-giay-phep', [GPKTNuocDuoiDatController::class, 'license']);
+    Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
+    Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);
+    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTNuocDuoiDatController::class, 'NewLicenseManagement']);
 });
