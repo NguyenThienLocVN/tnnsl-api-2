@@ -58,4 +58,31 @@ class GPKTNuocDuoiDatController extends Controller
             'role_user' => $roleUser,
         ];
     }
+
+    public function filterLicense($status)
+    {
+        $currentDate = Carbon::now();
+
+        $all = GPKTNuocDuoiDat::all();
+
+        $ChuaPheDuyet = GPKTNuocDuoiDat::where('status', '0')->get();
+
+        $ConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get();
+
+        $SapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get();
+
+        $HetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get();
+
+        if($status === "all"){
+            return $all;
+        }elseif($status === "conhieuluc"){
+            return $ConHieuLuc;
+        }elseif($status === "chuapheduyet"){
+            return $ChuaPheDuyet;
+        }elseif($status === "hethieuluc"){
+            return $HetHieuLuc;
+        }elseif($status === "saphethieuluc"){
+            return $SapHetHieuLuc;
+        }
+    }
 }

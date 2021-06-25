@@ -45,10 +45,11 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
 });
 
-Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
+Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/'], function()
 {
     Route::get('danh-sach-giay-phep', [GPKTNuocDuoiDatController::class, 'license']);
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);
+    Route::get('khai-thac/filter-license/{status}', [GPKTNuocDuoiDatController::class, 'filterLicense']);
     Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTNuocDuoiDatController::class, 'NewLicenseManagement']);
 });
