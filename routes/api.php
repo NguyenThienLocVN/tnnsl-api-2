@@ -24,32 +24,32 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-    
+
+// Quan ly cap phep
 Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 {
     Route::get('dem-giay-phep', [QuanLyCapPhepController::class, 'countLicense']);
     Route::get('dem-giay-phep-theo-nam', [QuanLyCapPhepController::class, 'countLicenseFolowYear']);
 });
 
+// Quan ly cap phep - Nuoc mat
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat'], function()
 {
     Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-so-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
-
 	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
-
     Route::get('luu-luong-theo-muc-dich-sd/{id_gp}', [GPNuocMatController::class, 'TrafficAccordingToThePurposeOfUse']);
-
     Route::get('tai-lieu/{id_gp}', [GPNuocMatController::class, 'tai_lieu']);
-
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
 });
 
-Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/'], function()
+// Quan ly cap phep - Nuoc duoi dat
+Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
 {
     Route::get('danh-sach-giay-phep', [GPKTNuocDuoiDatController::class, 'license']);
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);
     Route::get('khai-thac/filter-license/{status}', [GPKTNuocDuoiDatController::class, 'filterLicense']);
     Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTNuocDuoiDatController::class, 'NewLicenseManagement']);
+    Route::get('thong-tin-ban-do-cong-trinh', [GPKTNuocDuoiDatController::class, 'contructionInfoForMap']);
 });
