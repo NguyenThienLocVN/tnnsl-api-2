@@ -66,24 +66,28 @@ class GPKTNuocDuoiDatController extends Controller
 
         $all = GPKTNuocDuoiDat::all();
 
-        $ChuaPheDuyet = GPKTNuocDuoiDat::where('status', '0')->get();
+        $chuaPheDuyet = GPKTNuocDuoiDat::where('status', '0')->get();
 
-        $ConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get();
+        $conHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get();
 
-        $SapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get();
+        $sapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get();
 
-        $HetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get();
+        $hetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->paginate(10);
+        $demHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->count();
 
         if($status === "all"){
             return $all;
         }elseif($status === "conhieuluc"){
-            return $ConHieuLuc;
+            return $conHieuLuc;
         }elseif($status === "chuapheduyet"){
-            return $ChuaPheDuyet;
+            return $chuaPheDuyet;
         }elseif($status === "hethieuluc"){
-            return $HetHieuLuc;
+            return [
+                'hethieuluc' => $hetHieuLuc,
+                'tong_hethieuluc' => $demHetHieuLuc
+            ];
         }elseif($status === "saphethieuluc"){
-            return $SapHetHieuLuc;
+            return $sapHetHieuLuc;
         }
     }
     
