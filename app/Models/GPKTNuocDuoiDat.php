@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\NuocDuoiDatGieng;
+use App\Models\TaiLieuKTNuocDuoiDat;
 use Carbon\Carbon;
 
 class GPKTNuocDuoiDat extends Model
@@ -36,5 +37,10 @@ class GPKTNuocDuoiDat extends Model
     public function hang_muc_ct()
     {
         return $this->hasMany(NuocDuoiDatGieng::class, 'idgiayphep', 'id');
+    }
+
+    public function tai_lieu_nuoc_duoi_dat()
+    {
+        return $this->hasMany(TaiLieuKTNuocDuoiDat::class, 'idgiayphep', 'id');
     }
 }

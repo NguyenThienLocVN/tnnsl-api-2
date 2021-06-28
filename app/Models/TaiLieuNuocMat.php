@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Models\GPNuocMat;
 
-class TaiLieu extends Model
+class TaiLieuNuocMat extends Model
 {
     use HasFactory;
-    public $table = "tai_lieu";
+    public $table = "tailieu_nuocmat";
 
     public function gp_nuoc_mat()
     {

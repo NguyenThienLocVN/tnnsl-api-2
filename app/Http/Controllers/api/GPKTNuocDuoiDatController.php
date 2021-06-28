@@ -12,12 +12,8 @@ class GPKTNuocDuoiDatController extends Controller
 {
     public function license()
     {
-        $license = GPKTNuocDuoiDat::with('hang_muc_ct')->paginate(10);
-        $sumLicense = GPKTNuocDuoiDat::all()->count();
-        return [
-            'gp_ktnuocduoidat' => $license,
-            'tonggp_ktnuocduoidat' => $sumLicense,
-        ];
+        $license = GPKTNuocDuoiDat::with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
+        return $license;
     }
     public function countLicense()
     {
