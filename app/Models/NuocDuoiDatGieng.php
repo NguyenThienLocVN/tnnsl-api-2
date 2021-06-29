@@ -10,6 +10,21 @@ class NuocDuoiDatGieng extends Model
 {
     use HasFactory;
     public $table = "nuocduoidat_gieng";
+    public $timestamps = false;
+
+    protected $fillable = [
+        'idgiayphep',
+        'sohieu' ,
+        'x',
+        'y',
+        'luuluongkhaithac',
+        'chedo_ktsd',
+        'chieusau_doanthunuoctu',
+        'chieusau_doanthunuocden',
+        'chieusau_mucnuoctinh',
+        'chieusau_mucnuocdong_max',
+        'tangchuanuoc_kt',
+];
 
     public function gp_ktnuocduoidat()
     {

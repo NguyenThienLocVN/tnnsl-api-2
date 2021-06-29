@@ -5,8 +5,11 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GPKTNuocDuoiDat;
+use App\Models\NuocDuoiDatGieng;
+use App\Models\TaiLieuKTNuocDuoiDat;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class GPKTNuocDuoiDatController extends Controller
 {
@@ -48,8 +51,8 @@ class GPKTNuocDuoiDatController extends Controller
     }
     public function NewLicenseManagement($user_id)
     {
-        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->paginate(10);
-        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->paginate(10);
+        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->paginate(10);
+        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->paginate(10);
         return[
             'role_admin' => $roleAdmin,
             'role_user' => $roleUser,
@@ -113,5 +116,73 @@ class GPKTNuocDuoiDatController extends Controller
         }
         $infoJson = json_encode($infoArray, JSON_UNESCAPED_UNICODE);
         return $infoJson;
+    }
+    public function createLicense(Request $request)
+    {
+        $messages = [
+            'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
+            'gp_sogiayphep.required' => 'Vui lòng nhập số giấy phép', 
+            'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
+            'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
+            'chugiayphep_email.required' => 'Vui lòng nhập email', 
+            'congtrinh_diachi.required' => 'Vui lòng nhập địa chỉ công trình', 
+            'mucdich_ktsd.required' => 'Vui lòng nhập mục đích khai thác sử dụng', 
+            'tangchuanuoc_license.required' => 'Vui lòng nhập thông tin nội dung tầng chứa nước khai thác', 
+            'tangchuanuoc_gieng.required' => 'Vui lòng nhập thông tin tầng chứa nước khai thác', 
+            'sogieng_quantrac.required' => 'Vui lòng nhập số lượng giếng quan trắc', 
+            'tongluuluong_ktsd_max.required' => 'Vui lòng nhập số liệu tổng lưu lượng', 
+            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời gian cấp phép', 
+            'sohieu.required' => 'Vui lòng nhập số hiệu giếng', 
+            'x.required' => 'Vui lòng nhập tọa độ x', 
+            'y.required' => 'Vui lòng nhập tọa độ y', 
+            'luuluongkhaithac.required' => 'Vui lòng nhập số liệu lưu lượng khai thác', 
+            'chedo_ktsd.required' => 'Vui lòng nhập chế độ khai thác', 
+            'chieusau_doanthunuoctu.required' => 'Vui lòng nhập số liệu đoạn thu nước từ', 
+            'chieusau_doanthunuocden.required' => 'Vui lòng nhập số liệu đoạn thu nước đến', 
+            'chieusau_mucnuoctinh.required' => 'Vui lòng nhập số liệu chiều sâu mực nước tĩnh', 
+            'chieusau_mucnuocdong_max.required' => 'Vui lòng nhập số liệu chiều sâu mực nươc động lớn nhất',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'chugiayphep_ten' => 'required', 
+            'gp_sogiayphep' => 'required', 
+            'chugiayphep_diachi' => 'required', 
+            'chugiayphep_phone' => 'required', 
+            'chugiayphep_email' => 'required', 
+            'congtrinh_diachi' => 'required', 
+            'mucdich_ktsd' => 'required', 
+            'tangchuanuoc_license' => 'required', 
+            'tangchuanuoc_gieng' => 'required', 
+            'sogieng_quantrac' => 'required', 
+            'tongluuluong_ktsd_max' => 'required', 
+            'gp_thoigiancapphep' => 'required', 
+            'sohieu' => 'required', 
+            'x' => 'required', 
+            'y' => 'required', 
+            'luuluongkhaithac' => 'required', 
+            'chedo_ktsd' => 'required', 
+            'chieusau_doanthunuoctu' => 'required', 
+            'chieusau_doanthunuocden' => 'required', 
+            'chieusau_mucnuoctinh' => 'required', 
+            'chieusau_mucnuocdong_max' => 'required',
+        ], $messages);
+   
+        if($validator->fails()){
+            $messages = $validator->errors()->all();
+            $msg = $messages[0];
+            return response()->json(['error_message' => $msg], 400);       
+        }else{
+            $license = new GPKTNuocDuoiDat($request->all());
+            $license->tangchuanuoc = $request->tangchuanuoc_license;
+            $license->save();
+            $gieng = new NuocDuoiDatGieng($request->all()); 
+            $gieng->idgiayphep = $license->id;
+            $gieng->tangchuanuoc = $request->tangchuanuoc_gieng;
+            $gieng->save();
+            $tailieu = new TaiLieuKTNuocDuoiDat($request->all()); 
+            $tailieu->idgiayphep = $license->id;
+            $tailieu->save();
+            return response()->json(['success_message' => 'Xin cấp mới giấy phép thành công, chờ phê duyệt !' ]);
+        }
     }
 }

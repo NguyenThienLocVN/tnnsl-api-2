@@ -13,6 +13,46 @@ class GPKTNuocDuoiDat extends Model
     use HasFactory;
     public $table = "gp_ktnuocduoidat";
     protected $appends = ['hieulucgiayphep'];
+    protected $fillable = [
+        'user_id',
+        'gp_sogiayphep',
+        'gp_tengiayphep ',
+        'gp_thoigiancapphep',
+        'gp_coquan_capphep',
+        'gp_donvi_thamdinh',
+        'gp_donvi_thamquyen',
+        'gp_loaigiayphep',
+        'gp_thoihangiayphep',
+        'gp_nguoiky',
+        'gp_chucvu_nguoiky',
+        'gp_ngayky',
+        'gp_ngaybatdau',
+        'gp_ngayhethan',
+        'gp_noinhan',
+        'gp_ghichu',
+        'chugiayphep_diachi',
+        'chugiayphep_phone',
+        'chugiayphep_fax',
+        'chugiayphep_email',
+        'congtrinh_ten',
+        'congtrinh_ten',
+        'congtrinh_diadiem',
+        'congtrinh_ghichu',
+        'mahuyen',
+        'maxa',
+        'tangchuanuoc',
+        'tongluuluong_ktsd_max',
+        'mucdich_ktsd',
+        'sogieng_quantrac',
+        'sodiemlo_khaithac',
+        'somachlo_khaithac',
+        'thuocluuvuc',
+        'thuocluuvucsong',
+        'loai_kinh_tuyen_truc',
+        'muichieu',
+        'thoigian_batdau_vanhanh',
+        'sogieng_khaithac_duphong',
+    ];
 
     public function getHieulucgiayphepAttribute()
     {
