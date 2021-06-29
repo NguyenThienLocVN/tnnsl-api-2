@@ -52,6 +52,9 @@ class GPKTNuocDuoiDat extends Model
         'muichieu',
         'thoigian_batdau_vanhanh',
         'sogieng_khaithac_duphong',
+        'camket_dungsuthat',
+        'camket_chaphanhdungquydinh',
+        'camket_daguihoso',
     ];
 
     public function getHieulucgiayphepAttribute()
