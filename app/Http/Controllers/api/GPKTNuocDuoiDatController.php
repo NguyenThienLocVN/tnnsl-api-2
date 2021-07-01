@@ -49,14 +49,60 @@ class GPKTNuocDuoiDatController extends Controller
         $LicenseInfo = GPKTNuocDuoiDat::where('id', $id_gp)->with('hang_muc_ct')->get();
         return $LicenseInfo;
     }
-    public function NewLicenseManagement($user_id)
+    public function NewLicenseManagement($user_id, $status)
     {
-        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->paginate(10);
-        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->paginate(10);
-        return[
-            'role_admin' => $roleAdmin,
-            'role_user' => $roleUser,
-        ];
+        $role = User::where('id',$user_id)->get()->pluck('role');
+
+        $currentDate = Carbon::now();
+        // role admin
+
+        $adminAll = GPKTNuocDuoiDat::whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+
+        $adminChuaPheDuyet = GPKTNuocDuoiDat::whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+
+        $adminConHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','>',$currentDate)->orderBy('id', 'DESC')->get();
+
+        $adminSapHetHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->orderBy('id', 'DESC')->get();
+
+        $adminHetHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','<',$currentDate)->orderBy('id', 'DESC')->get();
+
+        // role user
+
+        $userAll = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+
+        $userChuaPheDuyet = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+
+        $userConHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','>',$currentDate)->orderBy('id', 'DESC')->get();
+
+        $userSapHetHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->orderBy('id', 'DESC')->get();
+
+        $userHetHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','<',$currentDate)->orderBy('id', 'DESC')->get();
+
+        if($role[0] == "admin"){
+            if($status == "all"){
+                return $adminAll;
+            }elseif($status == "conhieuluc"){
+                return $userConHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $userChuaPheDuyet;
+            }elseif($status == "saphethieuluc"){
+                return $adminSapHetHieuLuc;
+            }elseif($status == "hethieuluc"){
+                return $adminHetHieuLuc;
+            }
+        }elseif($role[0] == "user"){
+            if($status == "all"){
+                return $userAll;
+            }elseif($status == "conhieuluc"){
+                return $userConHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $userChuaPheDuyet;
+            }elseif($status == "saphethieuluc"){
+                return $userSapHetHieuLuc;
+            }elseif($status == "hethieuluc"){
+                return $userHetHieuLuc;
+            }
+        }
     }
 
     public function filterLicense($status)
@@ -68,22 +114,20 @@ class GPKTNuocDuoiDatController extends Controller
         $chuaPheDuyet = GPKTNuocDuoiDat::where('status', '0')->get();
 
         $conHieuLuc = GPKTNuocDuoiDat::with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get();
-        $tongConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->count();
 
         $sapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get();
 
         $hetHieuLuc = GPKTNuocDuoiDat::with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get();
-        $demHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->count();
 
-        if($status === "all"){
+        if($status == "all"){
             return $all;
-        }elseif($status === "conhieuluc"){
+        }elseif($status == "conhieuluc"){
             return $conHieuLuc;
-        }elseif($status === "chuapheduyet"){
+        }elseif($status == "chuapheduyet"){
             return $chuaPheDuyet;
-        }elseif($status === "hethieuluc"){
+        }elseif($status == "hethieuluc"){
             return $hetHieuLuc;
-        }elseif($status === "saphethieuluc"){
+        }elseif($status == "saphethieuluc"){
             return $sapHetHieuLuc;
         }
     }

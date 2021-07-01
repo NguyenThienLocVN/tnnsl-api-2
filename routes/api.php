@@ -53,6 +53,6 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);
     Route::get('khai-thac/loc-giay-phep/{status}', [GPKTNuocDuoiDatController::class, 'filterLicense']);
-    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}', [GPKTNuocDuoiDatController::class, 'NewLicenseManagement']);
+    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}/{status}', [GPKTNuocDuoiDatController::class, 'NewLicenseManagement']);
     Route::get('thong-tin-ban-do-cong-trinh', [GPKTNuocDuoiDatController::class, 'contructionInfoForMap']);
 });
