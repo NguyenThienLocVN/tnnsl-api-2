@@ -51,8 +51,8 @@ class GPKTNuocDuoiDatController extends Controller
     }
     public function NewLicenseManagement($user_id)
     {
-        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->paginate(10);
-        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->paginate(10);
+        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('created_at', 'ASC')->paginate(10);
+        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('created_at', 'ASC')->paginate(10);
         return[
             'role_admin' => $roleAdmin,
             'role_user' => $roleUser,
@@ -184,5 +184,12 @@ class GPKTNuocDuoiDatController extends Controller
             $tailieu->save();
             return response()->json(['success_message' => 'Xin cấp mới giấy phép thành công, chờ phê duyệt !' ]);
         }
+    }
+    public function updateStatus(Request $request, $id_gp)
+    {
+        $statusLicense = GPKTNuocDuoiDat::find($id_gp);
+        $statusLicense->status = $request->status;
+        $statusLicense->save();
+        return response()->json(['success_message' => 'Cập nhật trạng thái giấy phép thành công !' ]);
     }
 }
