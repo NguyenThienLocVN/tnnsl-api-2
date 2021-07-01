@@ -48,6 +48,7 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat'], function()
 {
     Route::post('cap-moi-giay-phep', [GPKTNuocDuoiDatController::class, 'createLicense']);
     Route::post('cap-nhat-trang-thai-giay-phep/{id_gp}', [GPKTNuocDuoiDatController::class, 'updateStatus']);
+    Route::get('xoa-giay-phep/{id_gp}', [GPKTNuocDuoiDatController::class, 'updateStatus']);
     Route::get('danh-sach-giay-phep', [GPKTNuocDuoiDatController::class, 'license']);
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);

@@ -51,8 +51,8 @@ class GPKTNuocDuoiDatController extends Controller
     }
     public function NewLicenseManagement($user_id)
     {
-        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('created_at', 'ASC')->paginate(10);
-        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('created_at', 'ASC')->paginate(10);
+        $roleAdmin = GPKTNuocDuoiDat::whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->paginate(10);
+        $roleUser = GPKTNuocDuoiDat::where('user_id', $user_id)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->paginate(10);
         return[
             'role_admin' => $roleAdmin,
             'role_user' => $roleUser,
@@ -123,6 +123,7 @@ class GPKTNuocDuoiDatController extends Controller
             'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
             'gp_sogiayphep.required' => 'Vui lòng nhập số giấy phép', 
             'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
+            'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
             'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
             'chugiayphep_email.required' => 'Vui lòng nhập email', 
             'congtrinh_diachi.required' => 'Vui lòng nhập địa chỉ công trình', 
@@ -147,6 +148,7 @@ class GPKTNuocDuoiDatController extends Controller
             'chugiayphep_ten' => 'required', 
             'gp_sogiayphep' => 'required', 
             'chugiayphep_diachi' => 'required', 
+            'chugiayphep_ten' => 'required', 
             'chugiayphep_phone' => 'required', 
             'chugiayphep_email' => 'required', 
             'congtrinh_diachi' => 'required', 
@@ -191,5 +193,11 @@ class GPKTNuocDuoiDatController extends Controller
         $statusLicense->status = $request->status;
         $statusLicense->save();
         return response()->json(['success_message' => 'Cập nhật trạng thái giấy phép thành công !' ]);
+    }
+    public function destroyLicense($id_gp)
+    {
+        $destroyLicense = GPKTNuocDuoiDat::find($id_gp);
+        $destroyLicense->delete();  
+        return response()->json(['success_message' => 'Xóa giấy phép thành công !' ]);
     }
 }
