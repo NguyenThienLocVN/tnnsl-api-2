@@ -46,7 +46,7 @@ class GPKTNuocDuoiDatController extends Controller
     }
     public function singleLicense($id_gp)
     {
-        $LicenseInfo = GPKTNuocDuoiDat::where('id', $id_gp)->with('hang_muc_ct')->get();
+        $LicenseInfo = GPKTNuocDuoiDat::where('id', $id_gp)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
         return $LicenseInfo;
     }
     public function NewLicenseManagement($user_id, $status)
