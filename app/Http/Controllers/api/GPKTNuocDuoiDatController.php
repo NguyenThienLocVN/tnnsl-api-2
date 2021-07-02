@@ -58,49 +58,49 @@ class GPKTNuocDuoiDatController extends Controller
 
         $adminAll = GPKTNuocDuoiDat::whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $adminChuaPheDuyet = GPKTNuocDuoiDat::whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+        $adminNopHoSo = GPKTNuocDuoiDat::whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $adminConHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','>',$currentDate)->orderBy('id', 'DESC')->get();
+        $adminDangLayYKienThamDinh = GPKTNuocDuoiDat::whereIn('status', [2])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $adminSapHetHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->orderBy('id', 'DESC')->get();
+        $adminHoanThanhHoSoCapPhep = GPKTNuocDuoiDat::whereIn('status', [3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $adminHetHieuLuc = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','<',$currentDate)->orderBy('id', 'DESC')->get();
+        $adminDaDuocCapPhep = GPKTNuocDuoiDat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
         // role user
 
-        $userAll = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+        $userAll = GPKTNuocDuoiDat::where('user_id',$user_id)->whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $userChuaPheDuyet = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
+        $userNopHoSo = GPKTNuocDuoiDat::where('user_id',$user_id)->whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $userConHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','>',$currentDate)->orderBy('id', 'DESC')->get();
+        $userDangLayYKienThamDinh = GPKTNuocDuoiDat::where('user_id',$user_id)->whereIn('status', [2])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $userSapHetHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->orderBy('id', 'DESC')->get();
+        $userHoanThanhHoSoCapPhep = GPKTNuocDuoiDat::where('user_id',$user_id)->whereIn('status', [3])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
-        $userHetHieuLuc = GPKTNuocDuoiDat::where('id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->where('gp_ngayhethan','<',$currentDate)->orderBy('id', 'DESC')->get();
+        $userDaDuocCapPhep = GPKTNuocDuoiDat::where('user_id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->orderBy('id', 'DESC')->get();
 
         if($role[0] == "admin"){
             if($status == "all"){
                 return $adminAll;
-            }elseif($status == "conhieuluc"){
-                return $userConHieuLuc;
-            }elseif($status == "chuapheduyet"){
-                return $userChuaPheDuyet;
-            }elseif($status == "saphethieuluc"){
-                return $adminSapHetHieuLuc;
-            }elseif($status == "hethieuluc"){
-                return $adminHetHieuLuc;
+            }elseif($status == "2"){
+                return $adminDangLayYKienThamDinh;
+            }elseif($status == "0"){
+                return $adminNopHoSo;
+            }elseif($status == "3"){
+                return $adminHoanThanhHoSoCapPhep;
+            }elseif($status == "1"){
+                return $adminDaDuocCapPhep;
             }
         }elseif($role[0] == "user"){
             if($status == "all"){
                 return $userAll;
-            }elseif($status == "conhieuluc"){
-                return $userConHieuLuc;
-            }elseif($status == "chuapheduyet"){
-                return $userChuaPheDuyet;
-            }elseif($status == "saphethieuluc"){
-                return $userSapHetHieuLuc;
-            }elseif($status == "hethieuluc"){
-                return $userHetHieuLuc;
+            }elseif($status == "2"){
+                return $userDangLayYKienThamDinh;
+            }elseif($status == "0"){
+                return $userNopHoSo;
+            }elseif($status == "3"){
+                return $userHoanThanhHoSoCapPhep;
+            }elseif($status == "1"){
+                return $userDaDuocCapPhep;
             }
         }
     }
