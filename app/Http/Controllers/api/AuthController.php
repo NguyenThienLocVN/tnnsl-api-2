@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 use App\Models\User;
 
@@ -14,6 +15,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        
         $messages = [
             'name.required' => 'Vui lòng nhập tên',
             'username.required' => 'Vui lòng nhập tên đăng nhập',
@@ -57,6 +59,15 @@ class AuthController extends Controller
                 'type' => $request->type
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            // send mail
+            $details = [
+                'title' => 'Newbie Register',
+                'body' => $request->name,
+            ];
+            Mail::to('tainguyenmoitruongsonla@gmail.com')->send(new \App\Mail\SendMail($details));
+           
+            
             
             return response()->json(['success_message' => 'Đăng ký thành công, vui lòng kích hoạt tài khoản !' ]);
         }      
