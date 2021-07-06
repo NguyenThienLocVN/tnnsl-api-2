@@ -23,7 +23,7 @@ class NuocDuoiDatGieng extends Model
         'chieusau_doanthunuocden',
         'chieusau_mucnuoctinh',
         'chieusau_mucnuocdong_max',
-        'tangchuanuoc_kt',
+        'tangchuanuoc',
 ];
 
     public function gp_ktnuocduoidat()

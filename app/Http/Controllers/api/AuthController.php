@@ -37,7 +37,7 @@ class AuthController extends Controller
             'username' => 'required|unique:users,username',
             'password' => 'required|min:6',
             'address' =>   'required|max:255',
-            'phone' => 'required|numeric|min:12',
+            'phone' => 'required|numeric|max:12',
         ], $messages);
    
         if($validator->fails()){
@@ -102,11 +102,8 @@ class AuthController extends Controller
             {
                 $user = User::where('username', $request['username'])->firstOrFail();
                 $token = $user->createToken('auth_token')->plainTextToken;
-
-                $user->remember_token = $token;
-                $user->save();
     
-                return response()->json(['user' => $user,'remember_token' => $token]);
+                return response()->json(['remember_token' => $token, 'user' => $user]);
             }
             else
             {
@@ -121,17 +118,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = User::where('remember_token', $request->token)->first();
-        if(!$user)
-        {
-            return response()->json(['message' => 'Invalid token']);
-        }
-        else
-        {
-            $user->remember_token = null;
-            $user->save();
-            Auth::guard('web')->logout();
-            return response()->json(['message' => 'Logout successfully']);
-        }
+        $request->user()->currentAccessToken()->delete(); 
+
+        return response()->json(['message' => 'Logout successfully']);
     }
 }
