@@ -37,7 +37,7 @@ class AuthController extends Controller
             'username' => 'required|unique:users,username',
             'password' => 'required|min:6',
             'address' =>   'required|max:255',
-            'phone' => 'required|numeric|max:12',
+            'phone' => 'required|numeric',
         ], $messages);
    
         if($validator->fails()){
@@ -62,10 +62,11 @@ class AuthController extends Controller
 
             // send mail
             $details = [
-                'title' => 'Newbie Register',
-                'body' => $request->name,
+                'title' => 'Xác thực email đăng ký',
+                'dear' => $request->name,
+                'link' => 'abc',
             ];
-            Mail::to('tainguyenmoitruongsonla@gmail.com')->send(new \App\Mail\SendMail($details));
+            Mail::to($request->email)->send(new \App\Mail\SendMail($details));
            
             
             
