@@ -170,7 +170,7 @@ class GPKTNuocDuoiDatController extends Controller
     {
         $messages = [
             'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
-            'so_giay_dkkd.required' => 'Vui lòng nhập số giấy đăng ký kinh doanh',
+            'chugiayphep_sogiaydangkykinhdoanh.required' => 'Vui lòng nhập số giấy đăng ký kinh doanh',
             'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
             'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
             'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
