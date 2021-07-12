@@ -29,7 +29,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 {
     Route::get('dem-giay-phep', [QuanLyCapPhepController::class, 'countLicense']);
-    Route::get('dem-giay-phep-theo-nam', [QuanLyCapPhepController::class, 'countLicenseFolowYear']);
+    Route::get('dem-giay-phep-theo-loai', [QuanLyCapPhepController::class, 'countLicenseFolowType']);
 });
 
 // Quan ly cap phep - Nuoc mat

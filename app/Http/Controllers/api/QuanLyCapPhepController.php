@@ -84,7 +84,7 @@ class QuanLyCapPhepController extends Controller
             ],
         ];
     }
-    public function countLicenseFolowYear()
+    public function countLicenseFolowType()
     {
         // gp nuocmat
         $gp_nuocmat2015 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
@@ -120,36 +120,44 @@ class QuanLyCapPhepController extends Controller
 
         return[
             'gp_nuocmat' => [
-                '2015' => $gp_nuocmat2015,
-                '2016' => $gp_nuocmat2016,
-                '2017' => $gp_nuocmat2017,
-                '2018' => $gp_nuocmat2018,
-                '2019' => $gp_nuocmat2019,
-                '2020' => $gp_nuocmat2020,
+                $gp_nuocmat2015,
+                $gp_nuocmat2016,
+                $gp_nuocmat2017,
+                $gp_nuocmat2018,
+                $gp_nuocmat2019,
+                $gp_nuocmat2020,
             ],
             'gp_ktnuocduoidat' => [
-                '2015' => $gp_ktnuocduoidat2015,
-                '2016' => $gp_ktnuocduoidat2016,
-                '2017' => $gp_ktnuocduoidat2017,
-                '2018' => $gp_ktnuocduoidat2018,
-                '2019' => $gp_ktnuocduoidat2019,
-                '2020' => $gp_ktnuocduoidat2020,
+                $gp_ktnuocduoidat2015,
+                $gp_ktnuocduoidat2016,
+                $gp_ktnuocduoidat2017,
+                $gp_ktnuocduoidat2018,
+                $gp_ktnuocduoidat2019,
+                $gp_ktnuocduoidat2020,
             ],
-             'gp_tdnuocduoidat' => [
-                '2015' => $gp_tdnuocduoidat2015,
-                '2016' => $gp_tdnuocduoidat2016,
-                '2017' => $gp_tdnuocduoidat2017,
-                '2018' => $gp_tdnuocduoidat2018,
-                '2019' => $gp_tdnuocduoidat2019,
-                '2020' => $gp_tdnuocduoidat2020,
+            'gp_tdnuocduoidat' => [
+                $gp_tdnuocduoidat2015,
+                $gp_tdnuocduoidat2016,
+                $gp_tdnuocduoidat2017,
+                $gp_tdnuocduoidat2018,
+                $gp_tdnuocduoidat2019,
+                $gp_tdnuocduoidat2020,
             ],
-             'gp_khoannuocduoidat' => [
-                '2015' => $gp_khoannuocduoidat2015,
-                '2016' => $gp_khoannuocduoidat2016,
-                '2017' => $gp_khoannuocduoidat2017,
-                '2018' => $gp_khoannuocduoidat2018,
-                '2019' => $gp_khoannuocduoidat2019,
-                '2020' => $gp_khoannuocduoidat2020,
+            'gp_khoannuocduoidat' => [
+                $gp_khoannuocduoidat2015,
+                $gp_khoannuocduoidat2016,
+                $gp_khoannuocduoidat2017,
+                $gp_khoannuocduoidat2018,
+                $gp_khoannuocduoidat2019,
+                $gp_khoannuocduoidat2020,
+            ],
+            'gp_xathai' => [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
             ],
         ];
 
