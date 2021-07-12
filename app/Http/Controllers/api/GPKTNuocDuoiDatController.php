@@ -175,19 +175,18 @@ class GPKTNuocDuoiDatController extends Controller
             'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
             'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
             'chugiayphep_email.required' => 'Vui lòng nhập email', 
+            'chugiayphep_email.email' => 'Vui lòng nhập email hợp lệ',
             'congtrinh_ten.required' => 'Vui lòng nhập tên công trình', 
-            'congtrinh_ten.email' => 'Vui lòng nhập email hợp lệ',
             'congtrinh_diadiem.required' => 'Vui lòng nhập địa chỉ công trình', 
             'mucdich_ktsd.required' => 'Vui lòng nhập mục đích khai thác sử dụng', 
             'sogieng_quantrac.required' => 'Vui lòng nhập số lượng giếng quan trắc', 
             'tongluuluong_ktsd_max.required' => 'Vui lòng nhập số liệu tổng lưu lượng', 
-            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời gian cấp phép', 
-            'camket_dungsuthat.required' => 'Mục này là bắt buộc',
-            'camket_chaphanhdungquydinh.required' => 'Mục này là bắt buộc'
+            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời gian cấp phép',
         ];
 
         $validator = Validator::make($request->all(), [
             'chugiayphep_ten' => 'required', 
+            'chugiayphep_sogiaydangkykinhdoanh' => 'required', 
             'chugiayphep_diachi' => 'required', 
             'chugiayphep_phone' => 'required|numeric', 
             'chugiayphep_email' => 'required|email',
@@ -196,11 +195,7 @@ class GPKTNuocDuoiDatController extends Controller
             'mucdich_ktsd' => 'required', 
             'sogieng_quantrac' => 'required', 
             'tongluuluong_ktsd_max' => 'required', 
-            'gp_thoigiancapphep' => 'required', 
-            'camket_dungsuthat' => 'required',
-            'camket_chaphanhdungquydinh' => 'required',
-            'gieng' => 'array|required|min:1',
-            'gieng.*' => 'required|min:1'
+            'gp_thoigiancapphep' => 'required',
         ], $messages);
    
         if($validator->fails()){
@@ -211,12 +206,14 @@ class GPKTNuocDuoiDatController extends Controller
             
             $license = new GPKTNuocDuoiDat($request->all());
             $license->user_id = $request->user()->id;
-            $license->tangchuanuoc = $request->tangchuanuoc;
+            $license->camket_dungsuthat = $request->camket_dungsuthat == "true" ? 1 : 0;
+            $license->camket_chaphanhdungquydinh = $request->camket_chaphanhdungquydinh == "true" ? 1 : 0;
+            $license->camket_daguihoso = $request->camket_daguihoso == "true" ? 1 : 0;
             $license->status = 0;
             $license->save();
 
 
-            $giengs = $request->gieng;
+            $giengs = $request->giengs;
             foreach ($giengs as $key => $data) {
                 NuocDuoiDatGieng::create([
                   'idgiayphep'   =>  $license->id,
