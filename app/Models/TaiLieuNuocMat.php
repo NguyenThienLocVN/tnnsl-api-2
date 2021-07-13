@@ -9,7 +9,7 @@ use App\Http\Models\GPNuocMat;
 class TaiLieuNuocMat extends Model
 {
     use HasFactory;
-    public $table = "tailieu_nuocmat";
+    public $table = "nuocmat__tailieu";
 
     public function gp_nuoc_mat()
     {

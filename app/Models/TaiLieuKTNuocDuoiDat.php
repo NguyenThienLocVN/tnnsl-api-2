@@ -9,7 +9,7 @@ use App\Http\Models\GPKTNuocDuoiDat;
 class TaiLieuKTNuocDuoiDat extends Model
 {
     use HasFactory;
-    public $table = "tailieu_ktnuocduoidat";
+    public $table = "ktnuocduoidat__tailieu";
     public $timestamps = false;
 
     protected $fillable = [

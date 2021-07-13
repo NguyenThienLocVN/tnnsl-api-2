@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class GPTDNuocDuoiDat extends Model
 {
     use HasFactory;
-    public $table = "gp_tdnuocduoidat";
+    public $table = "tdnuocduoidat__gp";
     protected $appends = ['hieulucgiayphep'];
     protected $fillable = [
         'user_id',

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GPKhoanNuocDuoiDat extends Model
 {
     use HasFactory;
-    public $table = "gp_khoannuocduoidat";
+    public $table = "khoannuocduoidat__gp";
     protected $appends = ['hieulucgiayphep'];
     protected $fillable = [
         'user_id',

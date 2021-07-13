@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NuocMatHangMuc extends Model
 {
     use HasFactory;
-    public $table = "nuocmat_hangmuc";
+    public $table = "nuocmat__hangmuc";
 
     public function gp_nuoc_mat()
     {

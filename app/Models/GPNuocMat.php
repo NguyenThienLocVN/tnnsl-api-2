@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class GPNuocMat extends Model
 {
     use HasFactory;
-    public $table = "gp_nuocmat";
+    public $table = "nuocmat__gp";
     protected $appends = ['loaigiayphep','hieulucgiayphep'];
 
     public function hang_muc_ct()

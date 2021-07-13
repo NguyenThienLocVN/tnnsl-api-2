@@ -8,7 +8,7 @@ use App\Models\GPNuocMat;
 
 class LuuLuongTheoMucDichSD extends Model
 {
-    public $table = "luuluongtheo_mdsd";
+    public $table = "nuocmat__luuluongtheomdsd";
 
     public function gp_nuoc_mat()
     {

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ChatLuongNuocMatQCVN extends Model
 {
     use HasFactory;
-    public $table = "chat_luong_nuoc_mat_qcvn";
+    public $table = "nuocmat__chatluongnuocmat";
 }
