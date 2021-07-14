@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// use App\Models\NuocDuoiDatGieng;
-// use App\Models\TaiLieuKTNuocDuoiDat;
+use App\Models\ToaDoCTThamDoNuocDuoiDat;
+use App\Models\TaiLieuTDNuocDuoiDat;
 use Carbon\Carbon;
 
 class GPTDNuocDuoiDat extends Model
@@ -74,15 +74,15 @@ class GPTDNuocDuoiDat extends Model
         }
     }
 
-    // public function hang_muc_ct()
-    // {
-    //     return $this->hasMany(NuocDuoiDatGieng::class, 'idgiayphep', 'id');
-    // }
+    public function toado_congtrinh()
+    {
+        return $this->hasMany(ToaDoCTThamDoNuocDuoiDat::class, 'idgiayphep', 'id');
+    }
 
-    // public function tai_lieu_nuoc_duoi_dat()
-    // {
-    //     return $this->hasMany(TaiLieuKTNuocDuoiDat::class, 'idgiayphep', 'id');
-    // }
+    public function tailieu_thamdo()
+    {
+        return $this->hasMany(TaiLieuTDNuocDuoiDat::class, 'idgiayphep', 'id');
+    }
 }
 
 ?>

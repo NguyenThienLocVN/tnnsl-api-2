@@ -4,30 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\GPKTNuocDuoiDat;
+use App\Models\GPTDNuocDuoiDat;
 
 class NuocDuoiDatGieng extends Model
 {
     use HasFactory;
-    public $table = "ktnuocduoidat__gieng";
+    public $table = "tdnuocduoidat__toadocongtrinh";
     public $timestamps = false;
 
     protected $fillable = [
         'idgiayphep',
-        'sohieu' ,
-        'x',
-        'y',
-        'luuluongkhaithac',
-        'chedo_ktsd',
-        'chieusau_doanthunuoctu',
-        'chieusau_doanthunuocden',
-        'chieusau_mucnuoctinh',
-        'chieusau_mucnuocdong_max',
-        'tangchuanuoc',
-];
+        'stt_diemgoc' ,
+        'congtrinh_toado_x',
+        'congtrinh_toado_y',
+        'latitude',
+        'longitude',
+    ];
 
     public function gp_ktnuocduoidat()
     {
-        return $this->belongsTo(GPKTNuocDuoiDat::class);
+        return $this->belongsTo(GPTDNuocDuoiDat::class);
     }
 }
