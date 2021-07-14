@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ToaDoCTThamDoNuocDuoiDat extends Model
 {
     use HasFactory;
-    public $table = "ktnuocduoidat__gieng";
+    public $table = "tdnuocduoidat__toadocongtrinh";
     public $timestamps = false;
 
     protected $fillable = [

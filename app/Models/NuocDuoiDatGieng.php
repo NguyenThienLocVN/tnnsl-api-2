@@ -9,7 +9,7 @@ use App\Models\GPTDNuocDuoiDat;
 class NuocDuoiDatGieng extends Model
 {
     use HasFactory;
-    public $table = "tdnuocduoidat__toadocongtrinh";
+    public $table = "ktnuocduoidat__gieng";
     public $timestamps = false;
 
     protected $fillable = [
