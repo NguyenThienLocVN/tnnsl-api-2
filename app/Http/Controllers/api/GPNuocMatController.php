@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class GPNuocMatController extends Controller
 {
     // list all Face water license
-    public function allFaceWaterLicenses(){
+    public function filterLicense($constructionType, $status){
         $license = GPNuocMat::all();
         // gp thủy điện
         $gp_thuydien = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
