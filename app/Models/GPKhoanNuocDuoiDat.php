@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class GPKhoanNuocDuoiDat extends Model
 {
@@ -71,13 +72,8 @@ class GPKhoanNuocDuoiDat extends Model
         }
     }
 
-    // public function hang_muc_ct()
-    // {
-    //     return $this->hasMany(NuocDuoiDatGieng::class, 'idgiayphep', 'id');
-    // }
-
-    // public function tai_lieu_nuoc_duoi_dat()
-    // {
-    //     return $this->hasMany(TaiLieuKTNuocDuoiDat::class, 'idgiayphep', 'id');
-    // }
+    public function tailieu_khoan()
+    {
+        return $this->hasMany(TaiLieuKhoanNuocDuoiDat::class, 'idgiayphep', 'id');
+    }
 }

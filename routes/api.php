@@ -7,6 +7,7 @@ use App\Http\Controllers\api\QuanLyCapPhepController;
 use App\Http\Controllers\api\GPNuocMatController;
 use App\Http\Controllers\api\GPKTNuocDuoiDatController;
 use App\Http\Controllers\api\GPTDNuocDuoiDatController;
+use App\Http\Controllers\api\GPKhoanNuocDuoiDatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,7 +50,6 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/'], function
 {
     Route::post('cap-moi-giay-phep', [GPKTNuocDuoiDatController::class, 'createLicense']);
     Route::get('xoa-giay-phep/{id_gp}', [GPKTNuocDuoiDatController::class, 'destroyStatus']);
-    Route::get('danh-sach-giay-phep', [GPKTNuocDuoiDatController::class, 'license']);
     Route::get('giay-phep-khai-thac/{id_gp}', [GPKTNuocDuoiDatController::class, 'singleLicense']);
     Route::get('dem-giay-phep', [GPKTNuocDuoiDatController::class, 'countLicense']);
     Route::get('loc-giay-phep/{status}', [GPKTNuocDuoiDatController::class, 'filterLicense']);
@@ -60,10 +60,19 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/'], function
 // Quan ly cap phep - Nuoc duoi dat - Tham do
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/tham-do/'], function()
 {
-    Route::get('danh-sach-giay-phep', [GPTDNuocDuoiDatController::class, 'license']);
     Route::get('dem-giay-phep', [GPTDNuocDuoiDatController::class, 'countLicense']);
     Route::get('giay-phep-tham-do/{id_gp}', [GPTDNuocDuoiDatController::class, 'singleLicense']);
     Route::get('loc-giay-phep/{status}', [GPTDNuocDuoiDatController::class, 'filterLicense']);
     Route::get('xoa-giay-phep/{id_gp}', [GPTDNuocDuoiDatController::class, 'destroyStatus']);
     Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}/{status}', [GPTDNuocDuoiDatController::class, 'NewLicenseManagement']);
+});
+
+// Quan ly cap phep - Nuoc duoi dat - Khoan
+Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/khoan/'], function()
+{
+    Route::get('dem-giay-phep', [GPKhoanNuocDuoiDatController::class, 'countLicense']);
+    Route::get('giay-phep-tham-do/{id_gp}', [GPKhoanNuocDuoiDatController::class, 'singleLicense']);
+    Route::get('loc-giay-phep/{status}', [GPKhoanNuocDuoiDatController::class, 'filterLicense']);
+    Route::get('xoa-giay-phep/{id_gp}', [GPKhoanNuocDuoiDatController::class, 'destroyStatus']);
+    Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}/{status}', [GPKhoanNuocDuoiDatController::class, 'NewLicenseManagement']);
 });
