@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\NuocMatHangMuc;
 use App\Models\LuuLuongTheoMucDichSD;
-use App\Models\TaiLieu;
+use App\Models\TaiLieuNuocMat;
 use Carbon\Carbon;
 
 class GPNuocMat extends Model
@@ -27,7 +27,7 @@ class GPNuocMat extends Model
 
     public function tai_lieu()
     {
-        return $this->hasMany(TaiLieu::class, 'idgiayphep', 'id');
+        return $this->hasMany(TaiLieuNuocMat::class, 'idgiayphep', 'id');
     }
 
     public function getLoaigiayphepAttribute()

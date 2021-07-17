@@ -278,10 +278,62 @@ class GPNuocMatController extends Controller
         return ChatLuongNuocMatQCVN::all();
     }
 
-    // Lay toa do lat long cua cong trinh thuy dien
-    public function getInfoHydroelectricForMap(){
-        $constructs = GPNuocMat::where('loaihinh_congtrinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->get()->toArray();
-        
-        return $constructs;
+    // Thong tin cong trinh hien thi tren ban do
+    public function hydroelectricContructionInfoForMap($loaiCongTrinh)
+    {
+        $licenses = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->paginate(10);
+
+        $infoArray = ['type' => 'FeatureCollection',
+                        'features' =>[]
+                        ];
+
+        foreach($licenses as $item){
+            if(count($item->hang_muc_ct) != 0){
+                array_push($infoArray['features'], 
+                [
+                    'geometry' => [
+                        'type' => 'Point',
+                        'coordinates' => [$item->hang_muc_ct[0]->latitude, $item->hang_muc_ct[0]->longitude]
+                    ],
+                    'type' => 'Feature',
+                    'properties' => [
+                        'hoverContent' => "<b>$item->congtrinh_ten</b>",
+                        'detailContent' => "<div> <h5 class='card-title fw-bold font-13'>".$item->hang_muc_ct[0]->tenhangmuc.' - '.$item->congtrinh_ten."</h5> <table class='table table-striped table-hover mb-2'> <tbody> <tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ X</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->x."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ Y</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->y."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Địa điểm</td><td class='col-8 py-1'>".$item->congtrinh_diadiem."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Số GP</td><td class='col-8 py-1'>".$item->gp_sogiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Ngày cấp</td><td class='col-8 py-1'>".$item->gp_thoigiancapphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1 font-11'>Cấp thẩm quyền</td><td class='col-8 py-1'>".$item->gp_donvi_thamquyen."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Chủ giấy phép</td><td class='col-8 py-1'>".$item->chugiayphep_ten."</td></tr></tbody> </table> <Link to={'/quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/xem-thong-tin-chung/'+$item->id} class='card-link d-block text-center'>Chi tiết công trình</Link></div>"
+                    ],
+                    'id' => $item->id
+                ]);
+            }
+        }
+        $infoJson = json_encode($infoArray, JSON_UNESCAPED_UNICODE);
+        return $infoJson;
     }
+
+    // Loc cong trinh thuy dien
+    public function filterHydroelectricLicense($loaiCongTrinh, $status)
+    {
+        $currentDate = Carbon::now();
+
+        $all = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+        $chuaPheDuyet = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+
+        $conHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+        $sapHetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->with('hang_muc_ct')->with('tai_lieu')->get();
+
+        $hetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+        if($status == "all"){
+            return $all;
+        }elseif($status == "conhieuluc"){
+            return $conHieuLuc;
+        }elseif($status == "chuapheduyet"){
+            return $chuaPheDuyet;
+        }elseif($status == "hethieuluc"){
+            return $hetHieuLuc;
+        }elseif($status == "saphethieuluc"){
+            return $sapHetHieuLuc;
+        }
+    }
+
 }
