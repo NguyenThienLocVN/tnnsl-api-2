@@ -148,7 +148,8 @@ class GPKTNuocDuoiDatController extends Controller
                         ];
 
         foreach($licenses as $item){
-            array_push($infoArray['features'], 
+            if(count($item->hang_muc_ct) != 0){
+                array_push($infoArray['features'], 
                 [
                     'geometry' => [
                         'type' => 'Point',
@@ -161,6 +162,7 @@ class GPKTNuocDuoiDatController extends Controller
                     ],
                     'id' => $item->id
                 ]);
+            }
         }
         $infoJson = json_encode($infoArray, JSON_UNESCAPED_UNICODE);
         return $infoJson;
@@ -201,7 +203,7 @@ class GPKTNuocDuoiDatController extends Controller
         if($validator->fails()){
             $messages = $validator->errors()->all();
             $msg = $messages[0];
-            return response()->json(['error_message' => $msg], 400);       
+            return response()->json(['message' => $msg], 400);       
         }else{
             
             $license = new GPKTNuocDuoiDat($request->all());
