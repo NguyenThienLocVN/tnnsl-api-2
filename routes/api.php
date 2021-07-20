@@ -37,6 +37,7 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 // Quan ly cap phep - Nuoc mat
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat/'], function()
 {
+    Route::get('xoa-giay-phep/{id_gp}', [GPNuocMatController::class, 'destroyStatus']);
     Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
 	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);

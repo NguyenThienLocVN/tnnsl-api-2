@@ -335,5 +335,10 @@ class GPNuocMatController extends Controller
             return $sapHetHieuLuc;
         }
     }
-
+    public function destroyLicense($id_gp)
+    {
+        $destroyLicense = GPNuocMat::find($id_gp);
+        $destroyLicense->delete();  
+        return response()->json(['success_message' => 'Xóa giấy phép thành công !' ]);
+    }
 }
