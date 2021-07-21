@@ -119,11 +119,11 @@ class GPKTNuocDuoiDatController extends Controller
 
         $chuaPheDuyet = GPKTNuocDuoiDat::where('status', '0')->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
 
-        $conHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
+        $conHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where("gp_thoigiancapphep", '')->orWhere('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
 
-        $sapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
+        $sapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where("gp_ngayhethan", '<>', '')->where('gp_ngayhethan', '>', Carbon::now()->subDays(90)->toDateString())->where('gp_ngayhethan', '<', Carbon::now()->toDateString())->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
 
-        $hetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
+        $hetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu_nuoc_duoi_dat')->get();
 
         if($status == "all"){
             return $all;

@@ -317,11 +317,11 @@ class GPNuocMatController extends Controller
 
         $chuaPheDuyet = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $conHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+        $conHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $sapHetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->with('hang_muc_ct')->with('tai_lieu')->get();
+        $sapHetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where("gp_ngayhethan", '<>', '')->where('gp_ngayhethan', '>', Carbon::now()->subDays(90)->toDateString())->where('gp_ngayhethan', '<', Carbon::now()->toDateString())->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $hetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+        $hetHieuLuc = GPNuocMat::where('loaihinh_congtrinh_ktsd', $loaiCongTrinh)->where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
 
         if($status == "all"){
             return $all;
