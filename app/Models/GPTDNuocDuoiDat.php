@@ -58,19 +58,20 @@ class GPTDNuocDuoiDat extends Model
     {
         $currentDate = Carbon::now();
 
-        $licenseDate = Carbon::parse($this->gp_ngayhethan);
-        $dateSapHetHan = Carbon::now()->addDays(60);
+        $licenseDate = $this->gp_ngayhethan;
+        $dateSapHetHan = $this->gp_ngayhethan < Carbon::now()->addDays(90);
 
         if($this->status == 0 || $this->status == '0'){
             return 'chuaduocduyet';
-        }else if($currentDate < $licenseDate){
-            if($licenseDate < $dateSapHetHan && $licenseDate == $currentDate){
+        }
+        if($currentDate > $licenseDate){
+            return 'hethieuluc';
+        }else{
+            if($dateSapHetHan){
                 return 'saphethieuluc';
             }else{
                 return 'conhieuluc';
             }
-        }else if($currentDate > $licenseDate){
-            return 'hethieuluc';
         }
     }
 

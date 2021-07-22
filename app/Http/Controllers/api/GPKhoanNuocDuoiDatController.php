@@ -24,7 +24,7 @@ class GPKhoanNuocDuoiDatController extends Controller
 
         $gp_tdnuocduoidatConHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_tdnuocduoidatSapHetHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(60))->get()->count();
+        $gp_tdnuocduoidatSapHetHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
         $gp_tdnuocduoidatHetHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -50,7 +50,7 @@ class GPKhoanNuocDuoiDatController extends Controller
 
         $conHieuLuc = GPKhoanNuocDuoiDat::with('tailieu_khoan')->where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get();
 
-        $sapHetHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get();
+        $sapHetHieuLuc = GPKhoanNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get();
 
         $hetHieuLuc = GPKhoanNuocDuoiDat::with('tailieu_khoan')->where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get();
 
