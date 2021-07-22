@@ -76,7 +76,7 @@ class GPNuocMatController extends Controller
         // gp còn hiệu lực
         $allConHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
         // gp sắp hết hiệu lực
-        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->get()->count();
+        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->get()->count();
 
         $allHetHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -89,7 +89,7 @@ class GPNuocMatController extends Controller
 
         $gp_thuydienConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_thuydienSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->count();
+        $gp_thuydienSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->get()->count();
 
         $gp_thuydienHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -102,7 +102,7 @@ class GPNuocMatController extends Controller
 
         $gp_hochuaConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'ho-chua')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_hochuaSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'ho-chua')->get()->count();
+        $gp_hochuaSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'ho-chua')->get()->count();
 
         $gp_hochuaHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'ho-chua')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -115,7 +115,7 @@ class GPNuocMatController extends Controller
 
         $gp_dapConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'dap')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_dapSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'dap')->get()->count();
+        $gp_dapSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'dap')->get()->count();
 
         $gp_dapHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'dap')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -128,7 +128,7 @@ class GPNuocMatController extends Controller
 
         $gp_congConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_congSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'cong')->get()->count();
+        $gp_congSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'cong')->get()->count();
 
         $gp_congHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -141,7 +141,7 @@ class GPNuocMatController extends Controller
 
         $gp_trambomConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'tram-bom')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_trambomSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'tram-bom')->get()->count();
+        $gp_trambomSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'tram-bom')->get()->count();
 
         $gp_trambomHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'tram-bom')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -154,7 +154,7 @@ class GPNuocMatController extends Controller
 
         $gp_tramcapnuocConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_tramcapnuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->get()->count();
+        $gp_tramcapnuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->get()->count();
 
         $gp_tramcapnuocHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'tram-cap-nuoc')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -167,7 +167,7 @@ class GPNuocMatController extends Controller
 
         $gp_nhamaynuocConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_nhamaynuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->get()->count();
+        $gp_nhamaynuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->get()->count();
 
         $gp_nhamaynuocHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'nha-may-nuoc')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
@@ -180,7 +180,7 @@ class GPNuocMatController extends Controller
 
         $gp_congtrinhkhacConHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_congtrinhkhacSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(60))->where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->get()->count();
+        $gp_congtrinhkhacSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->get()->count();
 
         $gp_congtrinhkhacHetHieuLuc = GPNuocMat::where('status', '1')->where('loaihinh_congtrinh_ktsd', 'cong-trinh-khac')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 

@@ -69,7 +69,7 @@ class GPKTNuocDuoiDat extends Model
         if($this->status == 0 || $this->status == '0'){
             return 'chuaduocduyet';
         }else if($currentDate < $licenseDate){
-            if($licenseDate < $dateSapHetHan && $licenseDate == $currentDate){
+            if($licenseDate < $dateSapHetHan){
                 return 'saphethieuluc';
             }else{
                 return 'conhieuluc';
