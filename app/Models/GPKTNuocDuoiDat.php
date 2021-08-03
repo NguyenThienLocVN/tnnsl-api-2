@@ -70,7 +70,12 @@ class GPKTNuocDuoiDat extends Model
             return 'chuaduocduyet';
         }
         if($currentDate > $licenseDate){
-            return 'hethieuluc';
+            if($licenseDate == '0000-00-00' || null){
+                return 'conhieuluc';
+            }
+            else{
+                return 'hethieuluc';
+            }
         }else{
             if($dateSapHetHan){
                 return 'saphethieuluc';
