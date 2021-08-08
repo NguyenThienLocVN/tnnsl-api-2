@@ -8,6 +8,8 @@ use App\Http\Controllers\api\GPNuocMatController;
 use App\Http\Controllers\api\GPKTNuocDuoiDatController;
 use App\Http\Controllers\api\GPTDNuocDuoiDatController;
 use App\Http\Controllers\api\GPKhoanNuocDuoiDatController;
+
+use App\Http\Controllers\api\HeThongQuanTrac\HeThongQuanTracController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -78,4 +80,11 @@ Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-duoi-dat/khoan/'], function()
     Route::get('loc-giay-phep/{status}', [GPKhoanNuocDuoiDatController::class, 'filterLicense']);
     Route::get('xoa-giay-phep/{id_gp}', [GPKhoanNuocDuoiDatController::class, 'destroyStatus']);
     Route::get('danh-sach-cap-moi-giay-phep-ktndd/{user_id}/{status}', [GPKhoanNuocDuoiDatController::class, 'NewLicenseManagement']);
+});
+
+
+// He thong quan trac
+Route::group(['prefix' => 'he-thong-quan-trac/'], function()
+{
+    Route::get('loc-dia-diem/{locationType}', [HeThongQuanTracController::class, 'filterLocation']);
 });
