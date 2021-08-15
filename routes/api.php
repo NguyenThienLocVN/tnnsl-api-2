@@ -39,14 +39,16 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 // Quan ly cap phep - Nuoc mat
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat/'], function()
 {
+    Route::post('cap-moi-giay-phep', [GPNuocMatController::class, 'createLicense']);
     Route::get('xoa-giay-phep/{id_gp}', [GPNuocMatController::class, 'destroyStatus']);
     Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
-	Route::get('giay-phep-thuy-dien/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
+	Route::get('thong-tin-giay-phep/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
     Route::get('luu-luong-theo-muc-dich-sd/{id_gp}', [GPNuocMatController::class, 'TrafficAccordingToThePurposeOfUse']);
     Route::get('tai-lieu/{id_gp}', [GPNuocMatController::class, 'tai_lieu']);
     Route::get('chat-luong-nuoc-mat-qcvn', [GPNuocMatController::class, 'chat_luong_nuoc_mat_qcvn']);
     Route::get('{loaiCongTrinh}/loc-giay-phep/{status}', [GPNuocMatController::class, 'filterHydroelectricLicense']);
+    Route::get('yeu-cau/{user_id}/{license_status}', [GPNuocMatController::class, 'RequestLicenseManagement']);
     Route::get('{loaiCongTrinh}/thong-tin-ban-do-cong-trinh', [GPNuocMatController::class, 'hydroelectricContructionInfoForMap']);
 });
 

@@ -12,7 +12,7 @@ class GPTDNuocDuoiDat extends Model
 {
     use HasFactory;
     public $table = "tdnuocduoidat__gp";
-    protected $appends = ['hieulucgiayphep'];
+    
     protected $fillable = [
         'user_id',
         'gp_sogiayphep',
@@ -53,6 +53,8 @@ class GPTDNuocDuoiDat extends Model
         'updated_at',
         'status',
     ];
+
+    protected $appends = ['hieulucgiayphep'];
 
     public function getHieulucgiayphepAttribute()
     {
