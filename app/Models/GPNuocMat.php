@@ -29,7 +29,7 @@ class GPNuocMat extends Model
         'gp_donvi_thamdinh',
         'gp_donvi_thamquyen',
         'gp_loaigiayphep',
-        'gp_thoigiancapphep',
+        'gp_thoihangiayphep',
         'gp_nguoiky',
         'gp_chucvu_nguoiky',
         'gp_ngayky',

@@ -309,7 +309,7 @@ class GPNuocMatController extends Controller
                     'type' => 'Feature',
                     'properties' => [
                         'hoverContent' => "<b>$item->congtrinh_ten</b>",
-                        'detailContent' => "<div> <h5 class='card-title fw-bold font-13'>".$item->hang_muc_ct[0]->tenhangmuc.' - '.$item->congtrinh_ten."</h5> <table class='table table-striped table-hover mb-2'> <tbody> <tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ X</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->x."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ Y</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->y."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Địa điểm</td><td class='col-8 py-1'>".$item->congtrinh_diadiem."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Số GP</td><td class='col-8 py-1'>".$item->gp_sogiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Ngày cấp</td><td class='col-8 py-1'>".$item->gp_thoigiancapphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1 font-11'>Cấp thẩm quyền</td><td class='col-8 py-1'>".$item->gp_donvi_thamquyen."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Chủ giấy phép</td><td class='col-8 py-1'>".$item->chugiayphep_ten."</td></tr></tbody> </table> <Link to={'/quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/xem-thong-tin-chung/'+$item->id} class='card-link d-block text-center'>Chi tiết công trình</Link></div>"
+                        'detailContent' => "<div> <h5 class='card-title fw-bold font-13'>".$item->hang_muc_ct[0]->tenhangmuc.' - '.$item->congtrinh_ten."</h5> <table class='table table-striped table-hover mb-2'> <tbody> <tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ X</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->x."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ Y</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->y."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Địa điểm</td><td class='col-8 py-1'>".$item->congtrinh_diadiem."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Số GP</td><td class='col-8 py-1'>".$item->gp_sogiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Ngày cấp</td><td class='col-8 py-1'>".$item->gp_thoihangiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1 font-11'>Cấp thẩm quyền</td><td class='col-8 py-1'>".$item->gp_donvi_thamquyen."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Chủ giấy phép</td><td class='col-8 py-1'>".$item->chugiayphep_ten."</td></tr></tbody> </table> <Link to={'/quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/xem-thong-tin-chung/'+$item->id} class='card-link d-block text-center'>Chi tiết công trình</Link></div>"
                     ],
                     'id' => $item->id
                 ]);
@@ -332,7 +332,7 @@ class GPNuocMatController extends Controller
 
         $sapHetHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $hetHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+        $hetHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->where("gp_thoihangiayphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
 
         if($status == "all"){
             return $all;
@@ -392,8 +392,8 @@ class GPNuocMatController extends Controller
             'luuluongnuoc_ktsd.required' => 'Vui lòng nhập lượng nước khai thác sử dụng',
             'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
             'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
-            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời gian cấp phép',
-            'gp_thoigiancapphep.numeric' => 'Vui lòng nhập thời gian cấp phép hợp lệ',
+            'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
+            'gp_thoihangiayphep.numeric' => 'Vui lòng nhập thời hạn giấy phép hợp lệ',
             'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
             'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
             'hangmuc.required' => 'Vui lòng nhập hạng mục công trình'
@@ -423,7 +423,7 @@ class GPNuocMatController extends Controller
             'mucdich_ktsd' => 'required', 
             'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'che_do_kt' => 'required',
-            'gp_thoigiancapphep' => 'required|numeric',
+            'gp_thoihangiayphep' => 'required|numeric',
             'camket_dungsuthat' => 'required',
             'camket_chaphanhdungquydinh' => 'required',
             'hangmuc' => 'required'
