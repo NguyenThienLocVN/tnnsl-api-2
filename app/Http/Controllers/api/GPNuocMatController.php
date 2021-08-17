@@ -274,7 +274,7 @@ class GPNuocMatController extends Controller
 
     // hydroelectricLicenseInfo
     public function hydroelectricLicenseInfo($id_gp){
-        $LicenseInfo = GPNuocMat::with('hang_muc_ct')->find($id_gp);
+        $LicenseInfo = GPNuocMat::with('hang_muc_ct')->with('tai_lieu')->find($id_gp);
         return $LicenseInfo;
     }
 
@@ -393,7 +393,6 @@ class GPNuocMatController extends Controller
             'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
             'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
             'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
-            'gp_thoihangiayphep.numeric' => 'Vui lòng nhập thời hạn giấy phép hợp lệ',
             'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
             'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
             'hangmuc.required' => 'Vui lòng nhập hạng mục công trình'
@@ -423,7 +422,7 @@ class GPNuocMatController extends Controller
             'mucdich_ktsd' => 'required', 
             'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'che_do_kt' => 'required',
-            'gp_thoihangiayphep' => 'required|numeric',
+            'gp_thoihangiayphep' => 'required',
             'camket_dungsuthat' => 'required',
             'camket_chaphanhdungquydinh' => 'required',
             'hangmuc' => 'required'
