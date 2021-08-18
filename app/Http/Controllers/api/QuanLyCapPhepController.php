@@ -84,81 +84,38 @@ class QuanLyCapPhepController extends Controller
             ],
         ];
     }
-    public function countLicenseFolowType()
+    public function countLicenseFolowType($startYear, $endYear)
     {
-        // gp nuocmat
-        $gp_nuocmat2015 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
-        $gp_nuocmat2016 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
-        $gp_nuocmat2017 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
-        $gp_nuocmat2018 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
-        $gp_nuocmat2019 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
-        $gp_nuocmat2020 = GPNuocMat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
+        $year = $startYear;
 
-        // gp ktnuocduoidat
-        $gp_ktnuocduoidat2015 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
-        $gp_ktnuocduoidat2016 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
-        $gp_ktnuocduoidat2017 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
-        $gp_ktnuocduoidat2018 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
-        $gp_ktnuocduoidat2019 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
-        $gp_ktnuocduoidat2020 = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
+        $label = [];
+        $data = [
+            'gp_nuocmat' => [],
+            'gp_ktnuocduoidat' => [],
+            'gp_tdnuocduoidat' => [],
+            'gp_khoannuocduoidat' => [],
+            'gp_xathai' => [0,0,0,0,0],
+        ];
 
-        // gp tdnuocduoidat
-        $gp_tdnuocduoidat2015 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
-        $gp_tdnuocduoidat2016 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
-        $gp_tdnuocduoidat2017 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
-        $gp_tdnuocduoidat2018 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
-        $gp_tdnuocduoidat2019 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
-        $gp_tdnuocduoidat2020 = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
+        for($i = $startYear ; $i<= $endYear ; $i++){
+            array_push($label, $i);
 
-        // gp khoannuocduoidat
-        $gp_khoannuocduoidat2015 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2015')->get()->count();
-        $gp_khoannuocduoidat2016 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2016')->get()->count();
-        $gp_khoannuocduoidat2017 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2017')->get()->count();
-        $gp_khoannuocduoidat2018 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2018')->get()->count();
-        $gp_khoannuocduoidat2019 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2019')->get()->count();
-        $gp_khoannuocduoidat2020 = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', '2020')->get()->count();
+            $gp_nuocmat = GPNuocMat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
+            array_push($data['gp_nuocmat'], $gp_nuocmat);
 
-        return[
-            'gp_nuocmat' => [
-                $gp_nuocmat2015,
-                $gp_nuocmat2016,
-                $gp_nuocmat2017,
-                $gp_nuocmat2018,
-                $gp_nuocmat2019,
-                $gp_nuocmat2020,
-            ],
-            'gp_ktnuocduoidat' => [
-                $gp_ktnuocduoidat2015,
-                $gp_ktnuocduoidat2016,
-                $gp_ktnuocduoidat2017,
-                $gp_ktnuocduoidat2018,
-                $gp_ktnuocduoidat2019,
-                $gp_ktnuocduoidat2020,
-            ],
-            'gp_tdnuocduoidat' => [
-                $gp_tdnuocduoidat2015,
-                $gp_tdnuocduoidat2016,
-                $gp_tdnuocduoidat2017,
-                $gp_tdnuocduoidat2018,
-                $gp_tdnuocduoidat2019,
-                $gp_tdnuocduoidat2020,
-            ],
-            'gp_khoannuocduoidat' => [
-                $gp_khoannuocduoidat2015,
-                $gp_khoannuocduoidat2016,
-                $gp_khoannuocduoidat2017,
-                $gp_khoannuocduoidat2018,
-                $gp_khoannuocduoidat2019,
-                $gp_khoannuocduoidat2020,
-            ],
-            'gp_xathai' => [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            ],
+            $gp_ktnuocduoidat = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
+            array_push($data['gp_ktnuocduoidat'], $gp_ktnuocduoidat);
+
+            $gp_tdnuocduoidat = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
+            array_push($data['gp_tdnuocduoidat'], $gp_tdnuocduoidat);
+
+            $gp_khoannuocduoidat = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
+            array_push($data['gp_khoannuocduoidat'], $gp_khoannuocduoidat);
+        }
+
+        return [
+            'label' => $label,
+            'data' => $data,
         ];
 
     }
