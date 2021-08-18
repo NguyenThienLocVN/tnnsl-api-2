@@ -40,6 +40,7 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 Route::group(['prefix' => 'quan-ly-cap-phep/nuoc-mat/'], function()
 {
     Route::post('cap-moi-giay-phep', [GPNuocMatController::class, 'createLicense']);
+    Route::post('sua-giay-phep/{id_gp}', [GPNuocMatController::class, 'editLicense']);
     Route::get('xoa-giay-phep/{id_gp}', [GPNuocMatController::class, 'destroyStatus']);
     Route::get('danh-sach-tat-ca-giay-phep', [GPNuocMatController::class, 'allFaceWaterLicenses']);
     Route::get('dem-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);

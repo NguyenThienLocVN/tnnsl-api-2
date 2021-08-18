@@ -274,8 +274,10 @@ class GPNuocMatController extends Controller
 
     // hydroelectricLicenseInfo
     public function hydroelectricLicenseInfo($id_gp){
-        $LicenseInfo = GPNuocMat::with('hang_muc_ct')->with('tai_lieu')->find($id_gp);
-        return $LicenseInfo;
+        $hangMuc = GPNuocMat::find($id_gp)->hang_muc_ct->toArray();
+        $licenseInfo = GPNuocMat::where('id', $id_gp)->with('tai_lieu')->get();
+
+        return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
     }
 
     // TrafficAccordingToThePurposeOfUse
@@ -487,6 +489,125 @@ class GPNuocMatController extends Controller
         }
     }
 
+    // Chinh sua giay phep
+    public function editLicense(GPNuocMat $id_gp, Request $request)
+    {
+        $messages = [
+            'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
+            'chugiayphep_sogiaydangkykinhdoanh.required' => 'Vui lòng nhập số giấy đăng ký kinh doanh',
+            'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
+            'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
+            'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
+            'chugiayphep_email.required' => 'Vui lòng nhập email', 
+            'chugiayphep_email.email' => 'Vui lòng nhập email hợp lệ',
+            'congtrinh_ten.required' => 'Vui lòng nhập tên công trình',
+            'congtrinh_diadiem.required' => 'Vui lòng nhập địa chỉ công trình',
+            'phuongthuc_kt.required' => 'Vui lòng nhập phương thức khai thác',
+            'congtrinh_hientrang.required' => 'Vui lòng nhập hiện trạng công trình',
+            'congsuat_lapmay.required' => 'Vui lòng nhập công suất lắp máy',
+            'congsuat_lapmay.numeric' => 'Vui lòng nhập công suất lắp máy hợp lệ',
+            'luuluonglonnhat_quathuydien.required' => 'Vui lòng nhập lưu lượng lớn nhất qua nhà máy thủy điện',
+            'luuluonglonnhat_quathuydien.regex' => 'Vui lòng nhập lưu lượng lớn nhất qua nhà máy thủy điện đúng định dạng số thập phân VD: 21.34',
+            'mucnuocdang_binhthuong.required' => 'Vui lòng nhập mực nước dâng bình thường',
+            'mucnuocdang_binhthuong.regex' => 'Vui lòng nhập mực nước dâng bình thường đúng định dạng số thập phân VD: 21.34',
+            'mucnuoc_chet.required' => 'Vui lòng nhập mực nước chết',
+            'mucnuoc_chet.regex' => 'Vui lòng nhập mực nước chết đúng định dạng số thập phân VD: 21.34',
+            'mucnuoccaonhat_truoclu.required' => 'Vui lòng nhập mực nước cao nhất trước lũ',
+            'mucnuoccaonhat_truoclu.regex' => 'Vui lòng nhập mực nước cao nhất trước lũ đúng định dạng số thập phân VD: 21.34',
+            'mucnuoc_donlu.required' => 'Vui lòng nhập mực nước đón lũ',
+            'mucnuoc_donlu.regex' => 'Vui lòng nhập mực nước đón lũ đúng định dạng số thập phân VD: 21.34',
+            'dungtich_huuich.required' => 'Vui lòng nhập dung tích hữu ích',
+            'dungtich_huuich.regex' => 'Vui lòng nhập dung tích hữu ích đúng định dạng số thập phân VD: 21.34',
+            'dungtich_toanbo.required' => 'Vui lòng nhập dung tích toàn bộ',
+            'dungtich_toanbo.regex' => 'Vui lòng nhập dung tích toàn bộ đúng định dạng số thập phân VD: 21.34',
+            'luuluong_xadongchay_toithieu.required' => 'Vui lòng nhập lưu lượng xả dòng chảy tối thiểu',
+            'luuluong_xadongchay_toithieu.regex' => 'Vui lòng nhập lưu lượng xả dòng chảy tối thiểu đúng định dạng số thập phân VD: 21.34',
+            'nguonnuoc_ktsd.required' => 'Vui lòng nhập nguồn nước khai thác sử dụng',
+            'vitri_laynuoc.required' => 'Vui lòng nhập vị trí lấy nước',
+            'mucdich_ktsd.required' => 'Vui lòng nhập mục đích khai thác sử dụng',
+            'luuluongnuoc_ktsd.required' => 'Vui lòng nhập lượng nước khai thác sử dụng',
+            'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
+            'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
+            'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
+            'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
+            'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
+            'hangmuc.required' => 'Vui lòng nhập hạng mục công trình'
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'chugiayphep_ten' => 'required', 
+            'chugiayphep_sogiaydangkykinhdoanh' => 'required', 
+            'chugiayphep_diachi' => 'required', 
+            'chugiayphep_phone' => 'required|numeric', 
+            'chugiayphep_email' => 'required|email',
+            'congtrinh_ten' => 'required', 
+            'congtrinh_diadiem' => 'required', 
+            'phuongthuc_kt' => 'required',
+            'congtrinh_hientrang' => 'required',
+            'congsuat_lapmay' => 'required|numeric',
+            'luuluonglonnhat_quathuydien' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'mucnuocdang_binhthuong' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'mucnuoc_chet' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'mucnuoccaonhat_truoclu' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'mucnuoc_donlu' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'dungtich_huuich' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'dungtich_toanbo' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'luuluong_xadongchay_toithieu' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'nguonnuoc_ktsd' => 'required',
+            'vitri_laynuoc' => 'required',
+            'mucdich_ktsd' => 'required', 
+            'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'che_do_kt' => 'required',
+            'gp_thoihangiayphep' => 'required',
+            'camket_dungsuthat' => 'required',
+            'camket_chaphanhdungquydinh' => 'required',
+            'hangmuc' => 'required'
+        ], $messages);
+   
+        if($validator->fails()){
+            $messages = $validator->errors()->all();
+            $msg = $messages[0];
+            return response()->json(['error_message' => $msg], 400);       
+        }else{
+            $id_gp->fill($request->all());
+            $id_gp->user_id = $request->user()->id;
+            $id_gp->gp_loaigiayphep = 'cap-moi';
+            $id_gp->camket_dungsuthat = $request->camket_dungsuthat == "true" ? 1 : 0;
+            $id_gp->camket_chaphanhdungquydinh = $request->camket_chaphanhdungquydinh == "true" ? 1 : 0;
+            $id_gp->camket_daguihoso = $request->camket_daguihoso == "true" ? 1 : 0;
+            $id_gp->status = 0;
+            $id_gp->save();
+
+            
+            $deleteOldData = NuocMatHangMuc::where('idgiayphep', $id_gp->id)->delete();
+
+            $hangmucRequest = json_decode($request->hangmuc);
+            foreach ($hangmucRequest as $key => $data) {
+                NuocMatHangMuc::create([
+                  'idgiayphep'   =>  $id_gp->id,
+                  'tenhangmuc'   =>  $data->tenhangmuc,
+                  'x'            =>  $data->x,
+                  'y'            =>  $data->y,
+                ]);
+            }
+            
+            // Save uploaded files
+            $currentYear = Carbon::now()->format('Y');
+            $destinationPath = 'uploads/'.$currentYear.'/khai-thac-nuoc-mat/';
+            $files = $request->file();
+            foreach($files as $file)
+            {
+                if($file->getClientOriginalName()){
+                    $fileName = $id_gp->id.'-'.$file->getClientOriginalName();
+                    $file->move($destinationPath, $fileName);
+                }
+            }
+
+            return response()->json(['success_message' => 'Chỉnh sửa giấy phép thành công !' ]);
+        }
+    }
+
+    // Quan ly yeu cau cap moi
     public function RequestLicenseManagement($user_id, $license_status)
     {
         $role = User::where('id',$user_id)->get()->pluck('role');
