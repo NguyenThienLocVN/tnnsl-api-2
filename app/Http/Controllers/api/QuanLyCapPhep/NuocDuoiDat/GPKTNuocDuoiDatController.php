@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\QuanLyCapPhep\NuocDuoiDat;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\GPKTNuocDuoiDat;
-use App\Models\NuocDuoiDatGieng;
-use App\Models\TaiLieuKTNuocDuoiDat;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
+
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPKTNuocDuoiDat;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\NuocDuoiDatGieng;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\TaiLieuKTNuocDuoiDat;
+
 
 class GPKTNuocDuoiDatController extends Controller
 {

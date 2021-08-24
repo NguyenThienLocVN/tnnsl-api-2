@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\QuanLyCapPhep;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\GPNuocMat;
-use App\Models\GPKTNuocDuoiDat;
-use App\Models\GPTDNuocDuoiDat;
-use App\Models\GPKhoanNuocDuoiDat;
 use Carbon\Carbon;
+
+
+use App\Models\QuanLyCapPhep\NuocMat\GPNuocMat;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPKTNuocDuoiDat;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPTDNuocDuoiDat;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPKhoanNuocDuoiDat;
+
 
 class QuanLyCapPhepController extends Controller
 {

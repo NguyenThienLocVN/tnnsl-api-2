@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\QuanLyCapPhep\NuocDuoiDat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\GPKhoanNuocDuoiDat;
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPKhoanNuocDuoiDat;
 
 class TaiLieuKhoanNuocDuoiDat extends Model
 {

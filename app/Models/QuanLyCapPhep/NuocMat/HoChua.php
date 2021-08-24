@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\QuanLyCapPhep\NuocMat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\NuocMatHangMuc;
-use App\Models\LuuLuongTheoMucDichSD;
-use App\Models\TaiLieuNuocMat;
 use Carbon\Carbon;
 
-class GPNuocMat extends Model
+class HoChua extends Model
 {
     use HasFactory;
-    public $table = "nuocmat__gp";
+    public $table = "nuocmat__gphochua";
 
     protected $fillable = [
         'user_id',
@@ -63,7 +60,6 @@ class GPNuocMat extends Model
         'phuongthuc_kt',
         'thoigianbom_trungbinh',
         'congsuatbom',
-        'loai_kinh_tuyen_truc',
         'thoigian_batdau_vanhanh',
         'congtrinh_ghichu',
         'camket_dungsuthat',

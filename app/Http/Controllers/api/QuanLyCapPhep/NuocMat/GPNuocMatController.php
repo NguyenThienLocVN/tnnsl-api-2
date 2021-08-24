@@ -1,17 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\QuanLyCapPhep\NuocMat;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\GPNuocMat;
-use App\Models\NuocMatHangMuc;
-use App\Models\TaiLieuNuocMat;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
+
+
+// THUY DIEN
+use App\Models\QuanLyCapPhep\NuocMat\ThuyDien;
+
+// HO CHUA
+use App\Models\QuanLyCapPhep\NuocMat\HoChua;
+
+// TRAM CAP NUOC
+use App\Models\QuanLyCapPhep\NuocMat\TramCapNuoc;
+
+// TRAM BOM
+use App\Models\QuanLyCapPhep\NuocMat\TramBom;
+
+// NHA MAY NUOC
+use App\Models\QuanLyCapPhep\NuocMat\NhaMayNuoc;
+
+
+
+use App\Models\QuanLyCapPhep\NuocMat\GPNuocMat;
+use App\Models\QuanLyCapPhep\NuocMat\NuocMatHangMuc;
+use App\Models\QuanLyCapPhep\NuocMat\TaiLieuNuocMat;
+
+
 
 class GPNuocMatController extends Controller
 {
@@ -21,103 +42,38 @@ class GPNuocMatController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    // list all Face water license
-    public function filterLicense($constructionType, $status){
-        $license = GPNuocMat::all();
-        // gp thủy điện
-        $gp_thuydien = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_thuydien = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'thuy-dien')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp hồ chứa
-        $gp_hochua = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_hochua = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'ho-chua')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp trạm bơm
-        $gp_trambom = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_trambom = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'tram-bom')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp đập/ hệ thống thủy lợi
-        $gp_dap = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_dap = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'dap')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp Cống
-        $gp_cong = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_cong = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'cong')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp trạm cấp nước
-        $gp_tramcapnuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_tramcapnuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp nhà máy nước
-        $gp_nhamaynuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_nhamaynuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-
-        // gp công trình khác
-        $gp_congtrinhkhac = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->paginate(10);
-        $tonggp_congtrinhkhac = GPNuocMat::where('congtrinh_loaihinh_ktsd', 'cong-trinh-khac')->with('hang_muc_ct')->with('tai_lieu')->with('luu_luong_theo_muc_dich_sd')->count();
-        return [
-                'gp_all' => $license,
-                'gp_thuydien' => $gp_thuydien,
-                'tonggp_thuydien' => $tonggp_thuydien,
-                'gp_hochua' => $gp_hochua,
-                'tonggp_hochua' => $tonggp_hochua,
-                'gp_dap' => $gp_dap,
-                'tonggp_dap' => $tonggp_dap,
-                'gp_cong' => $gp_cong,
-                'tonggp_cong' => $tonggp_cong,
-                'gp_trambom' => $gp_trambom,
-                'tonggp_trambom' => $tonggp_trambom,
-                'gp_tramcapnuoc' => $gp_tramcapnuoc,
-                'tonggp_tramcapnuoc' => $tonggp_tramcapnuoc,
-                'gp_nhamaynuoc' => $gp_nhamaynuoc,
-                'tonggp_nhamaynuoc' => $tonggp_nhamaynuoc,
-                'gp_congtrinhkhac' => $gp_congtrinhkhac,
-                'tonggp_congtrinhkhac' => $tonggp_congtrinhkhac
-        ];
-    }
-
-    // countLicenceNumber
+    // DEM GIAY PHEP
     public function countLicenceNumber(){
-
+        // NGAY HIEN TAI
         $currentDate = Carbon::now();
 
-        $allgp = GPNuocMat::all()->count();
-        // gp chưa được duyệt
-        $allChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
-        // gp còn hiệu lực
-        $allConHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
-        // gp sắp hết hiệu lực
-        $allSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
+        // THUY DIEN
+        $allgp_thuydien = ThuyDien::all()->count();
 
-        $allHetHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_thuydienGPDaCap = ThuyDien::where('status', '1')->get()->count();
 
-        // gp thủy điện
-        $allgp_thuydien = GPNuocMat::where('congtrinh_loaihinh_ktsd','thuy-dien')->count();
+        $gp_thuydienChuaDuocDuyet = ThuyDien::where('status', '0')->get()->count();
 
-        $gp_thuydienGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->get()->count();
+        $gp_thuydienConHieuLuc = ThuyDien::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_thuydienChuaDuocDuyet = GPNuocMat::where('status', '0')->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->get()->count();
+        $gp_thuydienSapHetHieuLuc = ThuyDien::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
-        $gp_thuydienConHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_thuydienHetHieuLuc = ThuyDien::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        $gp_thuydienSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->get()->count();
+        // HO CHUA
+        $allgp_hochua = HoChua::all()->count();
 
-        $gp_thuydienHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'thuy-dien')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_hochuaGPDaCap = HoChua::where('status', '1')->get()->count();
 
-        // gp hồ chứa
-        $allgp_hochua = GPNuocMat::where('congtrinh_loaihinh_ktsd','ho-chua')->count();
+        $gp_hochuaChuaDuocDuyet = HoChua::where('status', '0')->get()->count();
 
-        $gp_hochuaGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'ho-chua')->get()->count();
+        $gp_hochuaConHieuLuc = HoChua::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_hochuaChuaDuocDuyet = GPNuocMat::where('status', '0')->where('congtrinh_loaihinh_ktsd', 'ho-chua')->get()->count();
+        $gp_hochuaSapHetHieuLuc = HoChua::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
-        $gp_hochuaConHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'ho-chua')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_hochuaHetHieuLuc = HoChua::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        $gp_hochuaSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->where('congtrinh_loaihinh_ktsd', 'ho-chua')->get()->count();
-
-        $gp_hochuaHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'ho-chua')->where('gp_ngayhethan','<',$currentDate)->get()->count();
-
-        // gp đập
+        // DAP
         $allgp_dap = GPNuocMat::where('congtrinh_loaihinh_ktsd','dap')->count();
 
         $gp_dapGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'dap')->get()->count();
@@ -130,7 +86,7 @@ class GPNuocMatController extends Controller
 
         $gp_dapHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'dap')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        // gp cống
+        // CONG
         $allgp_cong = GPNuocMat::where('congtrinh_loaihinh_ktsd','cong')->count();
 
         $gp_congGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'cong')->get()->count();
@@ -143,46 +99,46 @@ class GPNuocMatController extends Controller
 
         $gp_congHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'cong')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        // gp trạm bơm
-        $allgp_trambom = GPNuocMat::where('congtrinh_loaihinh_ktsd','tram-bom')->count();
+        // TRAM BOM
+        $allgp_trambom = TramBom::all()->count();
 
-        $gp_trambomGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-bom')->get()->count();
+        $gp_trambomGPDaCap = TramBom::where('status', '1')->get()->count();
 
-        $gp_trambomChuaDuocDuyet = GPNuocMat::where('status', '0')->where('congtrinh_loaihinh_ktsd', 'tram-bom')->get()->count();
+        $gp_trambomChuaDuocDuyet = TramBom::where('status', '0')->get()->count();
 
-        $gp_trambomConHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-bom')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_trambomConHieuLuc = TramBom::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_trambomSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->where('congtrinh_loaihinh_ktsd', 'tram-bom')->get()->count();
+        $gp_trambomSapHetHieuLuc = TramBom::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
-        $gp_trambomHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-bom')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_trambomHetHieuLuc = TramBom::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        // gp trạm cấp nước
-        $allgp_tramcapnuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd','tram-cap-nuoc')->count();
+        // TRAM CAP NUOC
+        $allgp_tramcapnuoc = TramCapNuoc::all()->count();
 
-        $gp_tramcapnuocGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->get()->count();
+        $gp_tramcapnuocGPDaCap = TramCapNuoc::where('status', '1')->get()->count();
 
-        $gp_tramcapnuocChuaDuocDuyet = GPNuocMat::where('status', '0')->where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->get()->count();
+        $gp_tramcapnuocChuaDuocDuyet = TramCapNuoc::where('status', '0')->get()->count();
 
-        $gp_tramcapnuocConHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_tramcapnuocConHieuLuc = TramCapNuoc::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_tramcapnuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->get()->count();
+        $gp_tramcapnuocSapHetHieuLuc = TramCapNuoc::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
-        $gp_tramcapnuocHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'tram-cap-nuoc')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_tramcapnuocHetHieuLuc = TramCapNuoc::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        // gp nhà máy nước
-        $allgp_nhamaynuoc = GPNuocMat::where('congtrinh_loaihinh_ktsd','nha-may-nuoc')->count();
+        // NHA MAY NUOC
+        $allgp_nhamaynuoc = NhaMayNuoc::all()->count();
 
-        $gp_nhamaynuocGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->get()->count();
+        $gp_nhamaynuocGPDaCap = NhaMayNuoc::where('status', '1')->get()->count();
 
-        $gp_nhamaynuocChuaDuocDuyet = GPNuocMat::where('status', '0')->where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->get()->count();
+        $gp_nhamaynuocChuaDuocDuyet = NhaMayNuoc::where('status', '0')->get()->count();
 
-        $gp_nhamaynuocConHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_nhamaynuocConHieuLuc = NhaMayNuoc::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
 
-        $gp_nhamaynuocSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->get()->count();
+        $gp_nhamaynuocSapHetHieuLuc = NhaMayNuoc::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
 
-        $gp_nhamaynuocHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'nha-may-nuoc')->where('gp_ngayhethan','<',$currentDate)->get()->count();
+        $gp_nhamaynuocHetHieuLuc = NhaMayNuoc::where('status', '1')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-        // gp công trình khác
+        // CT KHAC
         $allgp_congtrinhkhac = GPNuocMat::where('congtrinh_loaihinh_ktsd','cong-trinh-khac')->count();
 
         $gp_congtrinhkhacGPDaCap = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'cong-trinh-khac')->get()->count();
@@ -195,11 +151,20 @@ class GPNuocMatController extends Controller
 
         $gp_congtrinhkhacHetHieuLuc = GPNuocMat::where('status', '1')->where('congtrinh_loaihinh_ktsd', 'cong-trinh-khac')->where('gp_ngayhethan','<',$currentDate)->get()->count();
 
-
+        // TAT CA
+        $allGp = $allgp_thuydien + $allgp_hochua + $allgp_dap + $allgp_cong + $allgp_trambom + $allgp_tramcapnuoc + $allgp_nhamaynuoc + $allgp_congtrinhkhac;
+        // GIAY PHEP CHUA DUOC DUYET
+        $allChuaDuocDuyet = $gp_thuydienChuaDuocDuyet + $gp_hochuaChuaDuocDuyet + $gp_dapChuaDuocDuyet + $gp_congChuaDuocDuyet + $gp_trambomChuaDuocDuyet + $gp_tramcapnuocChuaDuocDuyet + $gp_nhamaynuocChuaDuocDuyet + $gp_congtrinhkhacChuaDuocDuyet;
+        // GIAY PHEP CON HIEU LUC
+        $allConHieuLuc = $gp_thuydienConHieuLuc + $gp_hochuaConHieuLuc + $gp_dapConHieuLuc + $gp_congConHieuLuc + $gp_trambomConHieuLuc + $gp_tramcapnuocConHieuLuc + $gp_nhamaynuocConHieuLuc + $gp_congtrinhkhacConHieuLuc;
+        // GIAY PHEP SAP HET HIEU LUC
+        $allSapHetHieuLuc = $gp_thuydienSapHetHieuLuc + $gp_hochuaSapHetHieuLuc + $gp_dapSapHetHieuLuc + $gp_congSapHetHieuLuc + $gp_trambomSapHetHieuLuc + $gp_tramcapnuocSapHetHieuLuc + $gp_nhamaynuocSapHetHieuLuc + $gp_congtrinhkhacSapHetHieuLuc;
+        // GIAY PHEP HET HIEU LUC
+        $allHetHieuLuc = $gp_thuydienHetHieuLuc + $gp_hochuaHetHieuLuc + $gp_dapHetHieuLuc + $gp_congHetHieuLuc + $gp_trambomHetHieuLuc + $gp_tramcapnuocHetHieuLuc + $gp_nhamaynuocHetHieuLuc + $gp_congtrinhkhacHetHieuLuc;
 
         return [
             'tat_ca_gp_nuoc_mat' => [
-                'allgp' => $allgp,
+                'allgp' => $allGp,
                 'chua_phe_duyet' => $allChuaDuocDuyet,
                 'con_hieu_luc' => $allConHieuLuc,
                 'sap_het_hieu_luc' => $allSapHetHieuLuc,
@@ -272,26 +237,48 @@ class GPNuocMatController extends Controller
         ];
     }
 
-    // hydroelectricLicenseInfo
-    public function hydroelectricLicenseInfo($id_gp){
-        $hangMuc = GPNuocMat::find($id_gp)->hang_muc_ct->toArray();
-        $licenseInfo = GPNuocMat::where('id', $id_gp)->with('tai_lieu')->get();
 
-        return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+    // THONG TIN GIAY PHEP
+    public function hydroelectricLicenseInfo($loaiCongTrinh, $id_gp){
+        if($loaiCongTrinh == 'thuy-dien'){
+
+            $hangMuc = ThuyDien::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = ThuyDien::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+
+        }elseif($loaiCongTrinh == 'tram-bom'){
+
+            $hangMuc = TramBom::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = TramBom::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+
+        }elseif($loaiCongTrinh == 'ho-chua'){
+
+            $hangMuc = HoChua::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = HoChua::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+
+        }elseif($loaiCongTrinh == 'tram-cap-nuoc'){
+
+            $hangMuc = TramCapNuoc::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = TramCapNuoc::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+
+        }elseif($loaiCongTrinh == 'nha-may-nuoc'){
+
+            $hangMuc = NhaMayNuoc::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = NhaMayNuoc::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+
+        }else{
+            $hangMuc = GPNuocMat::find($id_gp)->hang_muc_ct->toArray();
+            $licenseInfo = GPNuocMat::where('id', $id_gp)->with('tai_lieu')->get();
+            return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
+        }
     }
 
-    // TrafficAccordingToThePurposeOfUse
-    public function TrafficAccordingToThePurposeOfUse($id_gp){
-        $license =  GPNuocMat::find($id_gp);
-        return $license->luu_luong_theo_muc_dich_sd;
-    }
 
-    // chat_luong_nuoc_mat_qcvn
-    public function chat_luong_nuoc_mat_qcvn(){
-        return ChatLuongNuocMatQCVN::all();
-    }
-
-    // Thong tin cong trinh hien thi tren ban do
+    // THONG TIN CONG TRINH TREN BAN DO
     public function hydroelectricContructionInfoForMap($loaiCongTrinh)
     {
         $licenses = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->paginate(10);
@@ -311,7 +298,7 @@ class GPNuocMatController extends Controller
                     'type' => 'Feature',
                     'properties' => [
                         'hoverContent' => "<b>$item->congtrinh_ten</b>",
-                        'detailContent' => "<div> <h5 class='card-title fw-bold font-13'>".$item->hang_muc_ct[0]->tenhangmuc.' - '.$item->congtrinh_ten."</h5> <table class='table table-striped table-hover mb-2'> <tbody> <tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ X</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->x."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ Y</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->y."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Địa điểm</td><td class='col-8 py-1'>".$item->congtrinh_diadiem."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Số GP</td><td class='col-8 py-1'>".$item->gp_sogiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Ngày cấp</td><td class='col-8 py-1'>".$item->gp_thoihangiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1 font-11'>Cấp thẩm quyền</td><td class='col-8 py-1'>".$item->gp_donvi_thamquyen."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Chủ giấy phép</td><td class='col-8 py-1'>".$item->chugiayphep_ten."</td></tr></tbody> </table> <Link to={'/quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/xem-thong-tin-chung/'+$item->id} class='card-link d-block text-center'>Chi tiết công trình</Link></div>"
+                        'detailContent' => "<div> <h5 class='card-title fw-bold font-13'>".$item->hang_muc_ct[0]->tenhangmuc.' - '.$item->congtrinh_ten."</h5> <table class='table table-striped table-hover mb-2'> <tbody> <tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ X</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->x."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Tọa độ Y</td><td class='col-8 py-1'>".$item->hang_muc_ct[0]->y."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Địa điểm</td><td class='col-8 py-1'>".$item->congtrinh_diadiem."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Số GP</td><td class='col-8 py-1'>".$item->gp_sogiayphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Ngày cấp</td><td class='col-8 py-1'>".$item->gp_thoigiancapphep."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1 font-11'>Cấp thẩm quyền</td><td class='col-8 py-1'>".$item->gp_donvi_thamquyen."</td></tr><tr class='col-12 d-flex p-0'> <td class='col-4 py-1'>Chủ giấy phép</td><td class='col-8 py-1'>".$item->chugiayphep_ten."</td></tr></tbody> </table> <Link to={'/quan-ly-cap-phep/nuoc-duoi-dat/khai-thac/xem-thong-tin-chung/'+$item->id} class='card-link d-block text-center'>Chi tiết công trình</Link></div>"
                     ],
                     'id' => $item->id
                 ]);
@@ -321,33 +308,129 @@ class GPNuocMatController extends Controller
         return $infoJson;
     }
 
-    // Loc cong trinh thuy dien
+    // LOC HIEU LUC GIAY PHEP
     public function filterHydroelectricLicense($loaiCongTrinh, $status)
     {
         $currentDate = Carbon::now();
 
-        $all = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+        if($loaiCongTrinh == 'thuy-dien'){
+            $all = ThuyDien::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $chuaPheDuyet = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+            $chuaPheDuyet = ThuyDien::where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $conHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+            $conHieuLuc = ThuyDien::where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $sapHetHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
+            $sapHetHieuLuc = ThuyDien::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        $hetHieuLuc = GPNuocMat::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->where('status', '1')->where("gp_thoihangiayphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+            $hetHieuLuc = ThuyDien::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
 
-        if($status == "all"){
-            return $all;
-        }elseif($status == "conhieuluc"){
-            return $conHieuLuc;
-        }elseif($status == "chuapheduyet"){
-            return $chuaPheDuyet;
-        }elseif($status == "hethieuluc"){
-            return $hetHieuLuc;
-        }elseif($status == "saphethieuluc"){
-            return $sapHetHieuLuc;
+            if($status == "all"){
+                return $all;
+            }elseif($status == "conhieuluc"){
+                return $conHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $chuaPheDuyet;
+            }elseif($status == "hethieuluc"){
+                return $hetHieuLuc;
+            }elseif($status == "saphethieuluc"){
+                return $sapHetHieuLuc;
+            }
+        }
+        elseif($loaiCongTrinh == 'ho-chua'){
+            $all = HoChua::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $chuaPheDuyet = HoChua::where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $conHieuLuc = HoChua::where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $sapHetHieuLuc = HoChua::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $hetHieuLuc = HoChua::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            if($status == "all"){
+                return $all;
+            }elseif($status == "conhieuluc"){
+                return $conHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $chuaPheDuyet;
+            }elseif($status == "hethieuluc"){
+                return $hetHieuLuc;
+            }elseif($status == "saphethieuluc"){
+                return $sapHetHieuLuc;
+            }
+        }
+        elseif($loaiCongTrinh == 'tram-bom'){
+            $all = TramBom::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $chuaPheDuyet = TramBom::where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $conHieuLuc = TramBom::where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $sapHetHieuLuc = TramBom::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $hetHieuLuc = TramBom::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            if($status == "all"){
+                return $all;
+            }elseif($status == "conhieuluc"){
+                return $conHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $chuaPheDuyet;
+            }elseif($status == "hethieuluc"){
+                return $hetHieuLuc;
+            }elseif($status == "saphethieuluc"){
+                return $sapHetHieuLuc;
+            }
+        }
+        elseif($loaiCongTrinh == 'tram-cap-nuoc'){
+            $all = TramCapNuoc::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $chuaPheDuyet = TramCapNuoc::where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $conHieuLuc = TramCapNuoc::where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $sapHetHieuLuc = TramCapNuoc::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $hetHieuLuc = TramCapNuoc::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            if($status == "all"){
+                return $all;
+            }elseif($status == "conhieuluc"){
+                return $conHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $chuaPheDuyet;
+            }elseif($status == "hethieuluc"){
+                return $hetHieuLuc;
+            }elseif($status == "saphethieuluc"){
+                return $sapHetHieuLuc;
+            }
+        }
+        elseif($loaiCongTrinh == 'nha-may-nuoc'){
+            $all = NhaMayNuoc::where('congtrinh_loaihinh_ktsd', $loaiCongTrinh)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $chuaPheDuyet = NhaMayNuoc::where('status', '0')->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $conHieuLuc = NhaMayNuoc::where('status', '1')->Where('gp_ngayhethan','>',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $sapHetHieuLuc = NhaMayNuoc::where('status', '1')->whereDate('gp_ngayhethan','<=',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            $hetHieuLuc = NhaMayNuoc::where('status', '1')->where("gp_thoigiancapphep", '<>', '')->where('gp_ngayhethan','<>', "0000-00-00")->where('gp_ngayhethan','<',$currentDate)->with('hang_muc_ct')->with('tai_lieu')->get();
+
+            if($status == "all"){
+                return $all;
+            }elseif($status == "conhieuluc"){
+                return $conHieuLuc;
+            }elseif($status == "chuapheduyet"){
+                return $chuaPheDuyet;
+            }elseif($status == "hethieuluc"){
+                return $hetHieuLuc;
+            }elseif($status == "saphethieuluc"){
+                return $sapHetHieuLuc;
+            }
         }
     }
+
+    // XOA GIAY PHEP
     public function destroyLicense($id_gp)
     {
         $destroyLicense = GPNuocMat::find($id_gp);
@@ -355,7 +438,7 @@ class GPNuocMatController extends Controller
         return response()->json(['success_message' => 'Xóa giấy phép thành công !' ]);
     }
 
-    // Tao moi giay phep
+    // TAO MOI GIAY PHEP
     public function createLicense(Request $request)
     {
         $messages = [
@@ -394,7 +477,7 @@ class GPNuocMatController extends Controller
             'luuluongnuoc_ktsd.required' => 'Vui lòng nhập lượng nước khai thác sử dụng',
             'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
             'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
-            'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
+            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời hạn giấy phép',
             'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
             'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
             'hangmuc.required' => 'Vui lòng nhập hạng mục công trình'
@@ -424,7 +507,7 @@ class GPNuocMatController extends Controller
             'mucdich_ktsd' => 'required', 
             'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'che_do_kt' => 'required',
-            'gp_thoihangiayphep' => 'required',
+            'gp_thoigiancapphep' => 'required',
             'camket_dungsuthat' => 'required',
             'camket_chaphanhdungquydinh' => 'required',
             'hangmuc' => 'required'
@@ -454,7 +537,7 @@ class GPNuocMatController extends Controller
                 ]);
             }
             
-            // Save uploaded files
+            // LUU FILE UPLOAD
             $currentYear = Carbon::now()->format('Y');
             $destinationPath = 'uploads/'.$currentYear.'/khai-thac-nuoc-mat/';
             $files = $request->file();
@@ -489,7 +572,7 @@ class GPNuocMatController extends Controller
         }
     }
 
-    // Chinh sua giay phep
+    // SUA GIAY PHEP
     public function editLicense(GPNuocMat $id_gp, Request $request)
     {
         $messages = [
@@ -528,7 +611,7 @@ class GPNuocMatController extends Controller
             'luuluongnuoc_ktsd.required' => 'Vui lòng nhập lượng nước khai thác sử dụng',
             'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
             'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
-            'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
+            'gp_thoigiancapphep.required' => 'Vui lòng nhập thời hạn giấy phép',
             'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
             'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
             'hangmuc.required' => 'Vui lòng nhập hạng mục công trình'
@@ -558,7 +641,7 @@ class GPNuocMatController extends Controller
             'mucdich_ktsd' => 'required', 
             'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'che_do_kt' => 'required',
-            'gp_thoihangiayphep' => 'required',
+            'gp_thoigiancapphep' => 'required',
             'camket_dungsuthat' => 'required',
             'camket_chaphanhdungquydinh' => 'required',
             'hangmuc' => 'required'
@@ -607,7 +690,7 @@ class GPNuocMatController extends Controller
         }
     }
 
-    // Quan ly yeu cau cap moi
+    // QUAN LY YEU CAU CAP MOI GIAY PHEP
     public function RequestLicenseManagement($user_id, $license_status)
     {
         $role = User::where('id',$user_id)->get()->pluck('role');

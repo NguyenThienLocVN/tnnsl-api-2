@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\QuanLyCapPhep\NuocMat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class GPKhoanNuocDuoiDat extends Model
+class TramCapNuoc extends Model
 {
     use HasFactory;
-    public $table = "khoannuocduoidat__gp";
-    protected $appends = ['hieulucgiayphep'];
+    public $table = "nuocmat__gptramcapnuoc";
+
     protected $fillable = [
         'user_id',
         'gp_sogiayphep',
@@ -26,7 +26,7 @@ class GPKhoanNuocDuoiDat extends Model
         'gp_donvi_thamdinh',
         'gp_donvi_thamquyen',
         'gp_loaigiayphep',
-        'gp_thoigiancapphep',
+        'gp_thoihangiayphep',
         'gp_nguoiky',
         'gp_chucvu_nguoiky',
         'gp_ngayky',
@@ -36,13 +36,31 @@ class GPKhoanNuocDuoiDat extends Model
         'gp_ghichu',
         'congtrinh_ten',
         'congtrinh_kyhieu',
+        'congtrinh_loaihinh_ktsd',
         'congtrinh_diadiem',
+        'congtrinh_hientrang',
         'mahuyen',
         'maxa',
-        'quymothamdo',
-        'tangchuanuoc',
+        'mucdich_ktsd',
+        'nguonnuoc_ktsd',
+        'vitri_laynuoc',
+        'thuocsong',
+        'thuocluuvucsong',
+        'congsuat_lapmay',
+        'luuluonglonnhat_quathuydien',
+        'luuluong_xadongchay_toithieu',
+        'dungtich_huuich',
+        'dungtich_toanbo',
+        'mucnuoc_chet',
+        'mucnuocdang_binhthuong',
+        'mucnuoccaonhat_truoclu',
+        'mucnuoc_donlu',
+        'che_do_kt',
+        'luuluongnuoc_ktsd',
+        'phuongthuc_kt',
+        'thoigianbom_trungbinh',
+        'congsuatbom',
         'thoigian_batdau_vanhanh',
-        'sogieng_khaithac_duphong',
         'congtrinh_ghichu',
         'camket_dungsuthat',
         'camket_chaphanhdungquydinh',
@@ -51,6 +69,36 @@ class GPKhoanNuocDuoiDat extends Model
         'updated_at',
         'status',
     ];
+
+    protected $appends = ['loaigiayphep','hieulucgiayphep'];
+
+    public function hang_muc_ct()
+    {
+        return $this->hasMany(NuocMatHangMuc::class, 'idgiayphep', 'id');
+    }
+
+    public function luu_luong_theo_muc_dich_sd()
+    {
+        return $this->hasMany(LuuLuongTheoMucDichSD::class, 'idgiayphep', 'id');
+    }
+
+    public function tai_lieu()
+    {
+        return $this->hasMany(TaiLieuNuocMat::class, 'idgiayphep', 'id');
+    }
+
+    public function getLoaigiayphepAttribute()
+    {
+        if($this->gp_loaigiayphep == "cap-moi"){
+            return "Cấp mới";
+        }else if($this->gp_loaigiayphep == "cap-lai"){
+            return "Cấp lại";
+        }else if($this->gp_loaigiayphep == "thu-hoi"){
+            return "Thu hồi";
+        }else{
+            return "";
+        }
+    }
 
     public function getHieulucgiayphepAttribute()
     {
@@ -76,10 +124,5 @@ class GPKhoanNuocDuoiDat extends Model
                 return 'conhieuluc';
             }
         }
-    }
-
-    public function tailieu_khoan()
-    {
-        return $this->hasMany(TaiLieuKhoanNuocDuoiDat::class, 'idgiayphep', 'id');
     }
 }

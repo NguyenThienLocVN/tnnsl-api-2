@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\QuanLyCapPhep\NuocMat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Models\GPNuocMat;
+use App\Http\Models\QuanLyCapPhep\NuocMat\GPNuocMat;
 
 class TaiLieuNuocMat extends Model
 {

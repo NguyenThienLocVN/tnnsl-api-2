@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\QuanLyCapPhep\NuocDuoiDat;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\GPTDNuocDuoiDat;
+
+use App\Models\QuanLyCapPhep\NuocDuoiDat\GPTDNuocDuoiDat;
 
 class GPTDNuocDuoiDatController extends Controller
 {
