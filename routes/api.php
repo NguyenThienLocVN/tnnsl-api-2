@@ -43,7 +43,7 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 
 
         // THONG TIN GIAY PHEP
-        Route::get('thong-tin-giay-phep/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
+        Route::get('/{loaiCongTrinh}/thong-tin-giay-phep/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
 
 
         // LOC GIAY PHEP THEP HIEU LUC VA HIEN THI

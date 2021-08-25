@@ -241,7 +241,6 @@ class GPNuocMatController extends Controller
     // THONG TIN GIAY PHEP
     public function hydroelectricLicenseInfo($loaiCongTrinh, $id_gp){
         if($loaiCongTrinh == 'thuy-dien'){
-
             $hangMuc = ThuyDien::find($id_gp)->hang_muc_ct->toArray();
             $licenseInfo = ThuyDien::where('id', $id_gp)->with('tai_lieu')->get();
             return ['licenseData' => $licenseInfo, 'hangmuc' => $hangMuc];
