@@ -54,19 +54,19 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'address' => $request->address,
                 'phone' => $request->phone,
-                'role' => 'user',
+                'role' => 'client',
                 'status' => 0,
                 'type' => $request->type
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // send mail
-            $details = [
-                'title' => 'Xác thực email đăng ký',
-                'dear' => $request->name,
-                'link' => 'abc',
-            ];
-            Mail::to($request->email)->send(new \App\Mail\SendMail($details));
+            // $details = [
+            //     'title' => 'Xác thực email đăng ký',
+            //     'dear' => $request->name,
+            //     'link' => 'abc',
+            // ];
+            // Mail::to($request->email)->send(new \App\Mail\SendMail($details));
            
             
             

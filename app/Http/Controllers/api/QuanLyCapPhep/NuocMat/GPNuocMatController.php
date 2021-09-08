@@ -723,7 +723,7 @@ class GPNuocMatController extends Controller
             }elseif($license_status == "1"){
                 return $adminDaDuocCapPhep;
             }
-        }elseif($role[0] == "user"){
+        }elseif($role[0] == "license_owner"){
             if($license_status == "all"){
                 return $userAll;
             }elseif($license_status == "2"){
