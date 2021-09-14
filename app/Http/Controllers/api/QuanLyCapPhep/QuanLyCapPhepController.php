@@ -53,73 +53,77 @@ class QuanLyCapPhepController extends Controller
 
 
         return [
-        'gp_ktnuocduoidat' => [
-                'tat_ca_giay_phep' => $allgp_ktnuocduoidat,
-                'giay_phep_da_cap' => $gp_ktnuocduoidatGPDaCap,
-                'chua_phe_duyet' => $gp_ktnuocduoidatChuaDuocDuyet,
-                'con_hieu_luc' => $gp_ktnuocduoidatConHieuLuc,
-                'sap_het_hieu_luc' => $gp_ktnuocduoidatSapHetHieuLuc,
-                'het_hieu_luc' => $gp_ktnuocduoidatHetHieuLuc,
+            'gp_ktnuocduoidat' => [
+                    'tat_ca_giay_phep' => $allgp_ktnuocduoidat,
+                    'giay_phep_da_cap' => $gp_ktnuocduoidatGPDaCap,
+                    'chua_phe_duyet' => $gp_ktnuocduoidatChuaDuocDuyet,
+                    'con_hieu_luc' => $gp_ktnuocduoidatConHieuLuc,
+                    'sap_het_hieu_luc' => $gp_ktnuocduoidatSapHetHieuLuc,
+                    'het_hieu_luc' => $gp_ktnuocduoidatHetHieuLuc,
             ],
-        'gp_tdnuocduoidat' => [
-            'tat_ca_giay_phep' => $allgp_tdnuocduoidat,
-            'giay_phep_da_cap' => $gp_tdnuocduoidatGPDaCap,
-            'chua_phe_duyet' => $gp_tdnuocduoidatChuaDuocDuyet,
-            'con_hieu_luc' => $gp_tdnuocduoidatConHieuLuc,
-            'sap_het_hieu_luc' => $gp_tdnuocduoidatSapHetHieuLuc,
-            'het_hieu_luc' => $gp_tdnuocduoidatHetHieuLuc,
-        ],
-        'gp_khoannuocduoidat' => [
-            'tat_ca_giay_phep' => $allgp_khoannuocduoidat,
-            'giay_phep_da_cap' => $gp_khoannuocduoidatGPDaCap,
-            'chua_phe_duyet' => $gp_khoannuocduoidatChuaDuocDuyet,
-            'con_hieu_luc' => $gp_khoannuocduoidatConHieuLuc,
-            'sap_het_hieu_luc' => $gp_khoannuocduoidatSapHetHieuLuc,
-            'het_hieu_luc' => $gp_khoannuocduoidatHetHieuLuc,
-        ],
-        'gp_nuocmat' => [
-                'tat_ca_giay_phep' => $allgp_nuocmat,
-                'giay_phep_da_cap' => $gp_nuocmatGPDaCap,
-                'chua_phe_duyet' => $gp_nuocmatChuaDuocDuyet,
-                'con_hieu_luc' => $gp_nuocmatConHieuLuc,
-                'sap_het_hieu_luc' => $gp_nuocmatSapHetHieuLuc,
-                'het_hieu_luc' => $gp_nuocmatHetHieuLuc,
+            'gp_nuocmat' => [
+                    'tat_ca_giay_phep' => $allgp_nuocmat,
+                    'giay_phep_da_cap' => $gp_nuocmatGPDaCap,
+                    'chua_phe_duyet' => $gp_nuocmatChuaDuocDuyet,
+                    'con_hieu_luc' => $gp_nuocmatConHieuLuc,
+                    'sap_het_hieu_luc' => $gp_nuocmatSapHetHieuLuc,
+                    'het_hieu_luc' => $gp_nuocmatHetHieuLuc,
+            ],
+            'gp_xathai' => [
+                'tat_ca_giay_phep' => 64,
+                'giay_phep_da_cap' => 64,
+                'chua_phe_duyet' => 0,
+                'con_hieu_luc' => 47,
+                'sap_het_hieu_luc' => 0,
+                'het_hieu_luc' => 17,
             ],
         ];
     }
     public function countLicenseFolowType($startYear, $endYear)
     {
+        $currentDate = Carbon::now();
         $year = $startYear;
 
         $label = [];
+
+        // gp_ktnuocduoidat
+        $gp_ktnuocduoidatChuaDuocDuyet = GPKTNuocDuoiDat::where('status', '0')->get()->count();
+        $gp_ktnuocduoidatConHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_ktnuocduoidatSapHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
+        $gp_ktnuocduoidatHetHieuLuc = GPKTNuocDuoiDat::where('status', '1')->where('gp_ngayhethan','<=',$currentDate)->get()->count();
+       
+        // gp_nuocmat
+        $gp_nuocmatChuaDuocDuyet = GPNuocMat::where('status', '0')->get()->count();
+        $gp_nuocmatConHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','>',$currentDate)->get()->count();
+        $gp_nuocmatSapHetHieuLuc = GPNuocMat::where('status', '1')->whereDate('gp_ngayhethan','<',Carbon::now()->addDays(90))->whereDate('gp_ngayhethan','>',Carbon::now())->get()->count();
+        $gp_nuocmatHetHieuLuc = GPNuocMat::where('status', '1')->where('gp_ngayhethan','<=',$currentDate)->get()->count();
+
+        $dataDoughnut = [
+            'gp_nuocmat' => [$gp_nuocmatConHieuLuc, $gp_nuocmatSapHetHieuLuc, $gp_nuocmatHetHieuLuc, $gp_nuocmatChuaDuocDuyet],
+            'gp_ktnuocduoidat' => [$gp_ktnuocduoidatConHieuLuc, $gp_ktnuocduoidatSapHetHieuLuc, $gp_ktnuocduoidatHetHieuLuc, $gp_ktnuocduoidatChuaDuocDuyet],
+            'gp_xathai' => [47, 0, 17, 0],
+        ];
+
         $data = [
             'gp_nuocmat' => [],
             'gp_ktnuocduoidat' => [],
-            'gp_tdnuocduoidat' => [],
-            'gp_khoannuocduoidat' => [],
-            'gp_xathai' => [0,0,0,0,0],
+            'gp_xathai' => [5, 7, 7, 4, 2],
         ];
 
         for($i = $startYear ; $i<= $endYear ; $i++){
-            array_push($label, $i);
+            array_push($label, (int)$i);
 
             $gp_nuocmat = GPNuocMat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
             array_push($data['gp_nuocmat'], $gp_nuocmat);
 
             $gp_ktnuocduoidat = GPKTNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
             array_push($data['gp_ktnuocduoidat'], $gp_ktnuocduoidat);
-
-            $gp_tdnuocduoidat = GPTDNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
-            array_push($data['gp_tdnuocduoidat'], $gp_tdnuocduoidat);
-
-            $gp_khoannuocduoidat = GPKhoanNuocDuoiDat::where('status','1')->whereYear('gp_ngayky', $i)->get()->count();
-            array_push($data['gp_khoannuocduoidat'], $gp_khoannuocduoidat);
         }
 
         return [
             'label' => $label,
             'data' => $data,
+            'dataDoughnut' => $dataDoughnut
         ];
-
     }
 }
