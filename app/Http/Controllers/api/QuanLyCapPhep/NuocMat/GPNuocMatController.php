@@ -435,7 +435,7 @@ class GPNuocMatController extends Controller
     // XOA GIAY PHEP
     public function destroyLicense($id_gp)
     {
-        $destroyLicense = GPNuocMat::find($id_gp);
+        $destroyLicense = ThuyDien::find($id_gp);
         $destroyLicense->delete();  
         return response()->json(['success_message' => 'Xóa giấy phép thành công !' ]);
     }
@@ -444,8 +444,7 @@ class GPNuocMatController extends Controller
     public function createLicense(Request $request)
     {
         $messages = [
-            'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
-            'chugiayphep_sogiaydangkykinhdoanh.required' => 'Vui lòng nhập số giấy đăng ký kinh doanh',
+            'chugiayphep_ten.required' => 'Vui lòng nhập tên cá nhân / tổ chức đề nghị cấp phép', 
             'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
             'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
             'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
@@ -486,8 +485,7 @@ class GPNuocMatController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'chugiayphep_ten' => 'required', 
-            'chugiayphep_sogiaydangkykinhdoanh' => 'required', 
+            'chugiayphep_ten' => 'required',  
             'chugiayphep_diachi' => 'required', 
             'chugiayphep_phone' => 'required|numeric', 
             'chugiayphep_email' => 'required|email',
@@ -520,7 +518,7 @@ class GPNuocMatController extends Controller
             $msg = $messages[0];
             return response()->json(['error_message' => $msg], 400);       
         }else{
-            $license = new GPNuocMat($request->all());
+            $license = new ThuyDien($request->all());
             $license->user_id = $request->user()->id;
             $license->gp_loaigiayphep = 'cap-moi';
             $license->camket_dungsuthat = $request->camket_dungsuthat == "true" ? 1 : 0;
@@ -575,11 +573,10 @@ class GPNuocMatController extends Controller
     }
 
     // SUA GIAY PHEP
-    public function editLicense(GPNuocMat $id_gp, Request $request)
+    public function editLicense(ThuyDien $id_gp, Request $request)
     {
         $messages = [
-            'chugiayphep_ten.required' => 'Vui lòng nhập tên chủ giấy phép', 
-            'chugiayphep_sogiaydangkykinhdoanh.required' => 'Vui lòng nhập số giấy đăng ký kinh doanh',
+            'chugiayphep_ten.required' => 'Vui lòng nhập tên cá nhân / tổ chức đề nghị cấp phép', 
             'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
             'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
             'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
@@ -621,7 +618,6 @@ class GPNuocMatController extends Controller
 
         $validator = Validator::make($request->all(), [
             'chugiayphep_ten' => 'required', 
-            'chugiayphep_sogiaydangkykinhdoanh' => 'required', 
             'chugiayphep_diachi' => 'required', 
             'chugiayphep_phone' => 'required|numeric', 
             'chugiayphep_email' => 'required|email',
@@ -693,48 +689,23 @@ class GPNuocMatController extends Controller
     }
 
     // QUAN LY YEU CAU CAP MOI GIAY PHEP
-    public function RequestLicenseManagement($user_id, $license_status)
+    public function ListLicensesByUser($loaiCongTrinh, $user_id, $license_status)
     {
-        $role = User::where('id',$user_id)->get()->pluck('role');
+        $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
-        // role admin
-        $adminAll = GPNuocMat::whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $adminNopHoSo = GPNuocMat::whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $adminDangLayYKienThamDinh = GPNuocMat::whereIn('status', [2])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $adminHoanThanhHoSoCapPhep = GPNuocMat::whereIn('status', [3])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $adminDaDuocCapPhep = GPNuocMat::whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-
-        // role user
-        $userAll = GPNuocMat::where('user_id',$user_id)->whereIn('status', [0,1,2,3])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $userNopHoSo = GPNuocMat::where('user_id',$user_id)->whereIn('status', [0])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $userDangLayYKienThamDinh = GPNuocMat::where('user_id',$user_id)->whereIn('status', [2])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $userHoanThanhHoSoCapPhep = GPNuocMat::where('user_id',$user_id)->whereIn('status', [3])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-        $userDaDuocCapPhep = GPNuocMat::where('user_id',$user_id)->whereIn('status', [1])->with('hang_muc_ct')->with('tai_lieu')->orderBy('id', 'DESC')->get();
-
-        if($role[0] == "admin"){
-            if($license_status == "all"){
-                return $adminAll;
-            }elseif($license_status == "2"){
-                return $adminDangLayYKienThamDinh;
-            }elseif($license_status == "0"){
-                return $adminNopHoSo;
-            }elseif($license_status == "3"){
-                return $adminHoanThanhHoSoCapPhep;
-            }elseif($license_status == "1"){
-                return $adminDaDuocCapPhep;
-            }
-        }elseif($role[0] == "license_owner"){
-            if($license_status == "all"){
-                return $userAll;
-            }elseif($license_status == "2"){
-                return $userDangLayYKienThamDinh;
-            }elseif($license_status == "0"){
-                return $userNopHoSo;
-            }elseif($license_status == "3"){
-                return $userHoanThanhHoSoCapPhep;
-            }elseif($license_status == "1"){
-                return $userDaDuocCapPhep;
-            }
+        if($role == 'admin'){
+            $gp_thuydien = ThuyDien::where('status', $license_status)->get();
+            return $gp_thuydien;
+        } 
+        else if ($role == 'license_owner'){
+            $gp_thuydien = ThuyDien::where('user_id', $user_id)->where('status', $license_status)->get();
+            return $gp_thuydien;
         }
+        else {
+            return null;
+        }
+        
+
+        
     }
 }

@@ -66,9 +66,9 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
         Route::get('xoa-giay-phep/{id_gp}', [GPNuocMatController::class, 'destroyStatus']);
 
 
-        // QUAN LY YEU CAU CAP MOI GIAY PHEP
-        Route::get('yeu-cau/{user_id}/{license_status}', [GPNuocMatController::class, 'RequestLicenseManagement']);
-        
+        // DANH SACH GIAY PHEP DA CAP THEO TAI KHOAN
+        Route::get('{loaiCongTrinh}/danh-sach/{user_id}/{license_status}', [GPNuocMatController::class, 'ListLicensesByUser']);
+
     });
     // QUAN LY CAP PHEP - NUOC DUOI DAT
     Route::group(['prefix' => 'nuoc-duoi-dat/'], function(){
