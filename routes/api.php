@@ -67,7 +67,16 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
 
 
         // DANH SACH GIAY PHEP DA CAP THEO TAI KHOAN
-        Route::get('{loaiCongTrinh}/danh-sach/{user_id}/{license_status}', [GPNuocMatController::class, 'ListLicensesByUser']);
+        Route::get('{loaiCongTrinh}/ho-so-da-cap/{user_id}/', [GPNuocMatController::class, 'grantedLicenseByUser']);
+
+        // DANH SACH GIAY PHEP CAP MOI THEO TAI KHOAN
+        Route::get('{loaiCongTrinh}/ho-so-cap-moi/{user_id}/', [GPNuocMatController::class, 'newLicenseByUser']);
+
+        // DANH SACH GIAY PHEP CAP MOI THEO TAI KHOAN
+        Route::get('{loaiCongTrinh}/ho-so-gia-han/{user_id}/', [GPNuocMatController::class, 'extendLicenseByUser']);
+
+        // DANH SACH GIAY PHEP CAP MOI THEO TAI KHOAN
+        Route::get('{loaiCongTrinh}/ho-so-thu-hoi/{user_id}/', [GPNuocMatController::class, 'recallLicenseByUser']);
 
     });
     // QUAN LY CAP PHEP - NUOC DUOI DAT

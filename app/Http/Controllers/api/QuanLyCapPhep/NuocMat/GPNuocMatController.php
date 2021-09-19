@@ -578,14 +578,9 @@ class GPNuocMatController extends Controller
         $messages = [
             'chugiayphep_ten.required' => 'Vui lòng nhập tên cá nhân / tổ chức đề nghị cấp phép', 
             'chugiayphep_diachi.required' => 'Vui lòng nhập địa chỉ', 
-            'chugiayphep_phone.required' => 'Vui lòng nhập số điện thoại',
-            'chugiayphep_phone.numeric' => 'Vui lòng nhập số điện thoại hợp lệ',
-            'chugiayphep_email.required' => 'Vui lòng nhập email', 
-            'chugiayphep_email.email' => 'Vui lòng nhập email hợp lệ',
             'congtrinh_ten.required' => 'Vui lòng nhập tên công trình',
             'congtrinh_diadiem.required' => 'Vui lòng nhập địa chỉ công trình',
             'phuongthuc_kt.required' => 'Vui lòng nhập phương thức khai thác',
-            'congtrinh_hientrang.required' => 'Vui lòng nhập hiện trạng công trình',
             'congsuat_lapmay.required' => 'Vui lòng nhập công suất lắp máy',
             'congsuat_lapmay.numeric' => 'Vui lòng nhập công suất lắp máy hợp lệ',
             'luuluonglonnhat_quathuydien.required' => 'Vui lòng nhập lưu lượng lớn nhất qua nhà máy thủy điện',
@@ -605,11 +600,9 @@ class GPNuocMatController extends Controller
             'luuluong_xadongchay_toithieu.required' => 'Vui lòng nhập lưu lượng xả dòng chảy tối thiểu',
             'luuluong_xadongchay_toithieu.regex' => 'Vui lòng nhập lưu lượng xả dòng chảy tối thiểu đúng định dạng số thập phân VD: 21.34',
             'nguonnuoc_ktsd.required' => 'Vui lòng nhập nguồn nước khai thác sử dụng',
-            'vitri_laynuoc.required' => 'Vui lòng nhập vị trí lấy nước',
             'mucdich_ktsd.required' => 'Vui lòng nhập mục đích khai thác sử dụng',
             'luuluongnuoc_ktsd.required' => 'Vui lòng nhập lượng nước khai thác sử dụng',
             'luuluongnuoc_ktsd.regex' => 'Vui lòng nhập lượng nước khai thác sử dụng đúng định dạng số thập phân VD: 21.34',
-            'che_do_kt.required' => 'Vui lòng nhập chế độ khai thác',
             'gp_thoihangiayphep.required' => 'Vui lòng nhập thời hạn giấy phép',
             'camket_dungsuthat.numeric' => 'Vui lòng chọn cam kết đúng sự thật',
             'camket_chaphanhdungquydinh.numeric' => 'Vui lòng chọn cam kết đúng quy định',
@@ -618,13 +611,10 @@ class GPNuocMatController extends Controller
 
         $validator = Validator::make($request->all(), [
             'chugiayphep_ten' => 'required', 
-            'chugiayphep_diachi' => 'required', 
-            'chugiayphep_phone' => 'required|numeric', 
-            'chugiayphep_email' => 'required|email',
+            'chugiayphep_diachi' => 'required',  
             'congtrinh_ten' => 'required', 
             'congtrinh_diadiem' => 'required', 
             'phuongthuc_kt' => 'required',
-            'congtrinh_hientrang' => 'required',
             'congsuat_lapmay' => 'required|numeric',
             'luuluonglonnhat_quathuydien' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'mucnuocdang_binhthuong' => 'required|regex:/^\d+(\.\d{1,2})?$/',
@@ -635,10 +625,8 @@ class GPNuocMatController extends Controller
             'dungtich_toanbo' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'luuluong_xadongchay_toithieu' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'nguonnuoc_ktsd' => 'required',
-            'vitri_laynuoc' => 'required',
             'mucdich_ktsd' => 'required', 
             'luuluongnuoc_ktsd' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'che_do_kt' => 'required',
             'gp_thoihangiayphep' => 'required',
             'camket_dungsuthat' => 'required',
             'camket_chaphanhdungquydinh' => 'required',
@@ -656,7 +644,6 @@ class GPNuocMatController extends Controller
             $id_gp->camket_dungsuthat = $request->camket_dungsuthat == "true" ? 1 : 0;
             $id_gp->camket_chaphanhdungquydinh = $request->camket_chaphanhdungquydinh == "true" ? 1 : 0;
             $id_gp->camket_daguihoso = $request->camket_daguihoso == "true" ? 1 : 0;
-            $id_gp->status = 0;
             $id_gp->save();
 
             
@@ -688,24 +675,75 @@ class GPNuocMatController extends Controller
         }
     }
 
-    // QUAN LY YEU CAU CAP MOI GIAY PHEP
-    public function ListLicensesByUser($loaiCongTrinh, $user_id, $license_status)
+    // DANH SACH HO SO DA CAP PHEP THEO TAI KHOAN NGUOI DUNG
+    public function grantedLicenseByUser($loaiCongTrinh, $user_id)
     {
         $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
         if($role == 'admin'){
-            $gp_thuydien = ThuyDien::where('status', $license_status)->get();
+            $gp_thuydien = ThuyDien::where('status', 1)->get();
             return $gp_thuydien;
         } 
-        else if ($role == 'license_owner'){
-            $gp_thuydien = ThuyDien::where('user_id', $user_id)->where('status', $license_status)->get();
+        else if ($role == 'chu-giay-phep'){
+            $gp_thuydien = ThuyDien::where('user_id', $user_id)->where('status', 1)->get();
             return $gp_thuydien;
         }
         else {
             return null;
-        }
-        
+        }        
+    }
 
-        
+    // DANH SACH HO SO CAP MOI THEO TAI KHOAN NGUOI DUNG
+    public function newLicenseByUser($loaiCongTrinh, $user_id)
+    {
+        $role = User::where('id',$user_id)->get()->pluck('role')[0];
+
+        if($role == 'admin'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'cap-moi')->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else if ($role == 'chu-giay-phep'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'cap-moi')->where('user_id', $user_id)->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else {
+            return null;
+        }        
+    }
+
+    // DANH SACH HO SO GIA HAN THEO TAI KHOAN NGUOI DUNG
+    public function extendLicenseByUser($loaiCongTrinh, $user_id)
+    {
+        $role = User::where('id',$user_id)->get()->pluck('role')[0];
+
+        if($role == 'admin'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'gia-han')->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else if ($role == 'chu-giay-phep'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'gia-han')->where('user_id', $user_id)->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else {
+            return null;
+        }        
+    }
+
+    // DANH SACH HO SO THU HOI THEO TAI KHOAN NGUOI DUNG
+    public function recallLicenseByUser($loaiCongTrinh, $user_id)
+    {
+        $role = User::where('id',$user_id)->get()->pluck('role')[0];
+
+        if($role == 'admin'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'thu-hoi')->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else if ($role == 'chu-giay-phep'){
+            $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'thu-hoi')->where('user_id', $user_id)->where('status', 0)->get();
+            return $gp_thuydien;
+        }
+        else {
+            return null;
+        }        
     }
 }
