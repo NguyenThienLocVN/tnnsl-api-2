@@ -680,7 +680,7 @@ class GPNuocMatController extends Controller
     {
         $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
-        if($role == 'admin'){
+        if($role == 'admin' || $role == 'lanh-dao' ){
             $gp_thuydien = ThuyDien::where('status', 1)->get();
             return $gp_thuydien;
         } 
@@ -698,7 +698,7 @@ class GPNuocMatController extends Controller
     {
         $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
-        if($role == 'admin'){
+        if($role == 'admin' || $role == 'lanh-dao' ){
             $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'cap-moi')->where('status', 0)->get();
             return $gp_thuydien;
         }
@@ -716,7 +716,7 @@ class GPNuocMatController extends Controller
     {
         $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
-        if($role == 'admin'){
+        if($role == 'admin' || $role == 'lanh-dao' ){
             $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'gia-han')->where('status', 0)->get();
             return $gp_thuydien;
         }
@@ -734,7 +734,7 @@ class GPNuocMatController extends Controller
     {
         $role = User::where('id',$user_id)->get()->pluck('role')[0];
 
-        if($role == 'admin'){
+        if($role == 'admin' || $role == 'lanh-dao' ){
             $gp_thuydien = ThuyDien::where('gp_loaigiayphep', 'thu-hoi')->where('status', 0)->get();
             return $gp_thuydien;
         }
