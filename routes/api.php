@@ -39,15 +39,15 @@ Route::group(['prefix' => 'quan-ly-cap-phep/'], function()
     Route::group(['prefix' => 'nuoc-mat/'], function()
     {
         // DEM GIAY PHEP
-        Route::get('dem-giay-phep', [GPNuocMatController::class, 'countLicenceNumber']);
+        Route::get('dem-giay-phep', [QuanLyCapPhepController::class, 'countLicenceByType']);
 
 
         // THONG TIN GIAY PHEP
-        Route::get('{loaiCongTrinh}/thong-tin-giay-phep/{id_gp}', [GPNuocMatController::class, 'hydroelectricLicenseInfo']);
+        Route::get('{loaiCongTrinh}/thong-tin-giay-phep/{id_gp}', [QuanLyCapPhepController::class, 'showLicenseInfo']);
 
 
         // LOC GIAY PHEP THEP HIEU LUC VA HIEN THI
-        Route::get('{loaiCongTrinh}/loc-giay-phep/{status}', [GPNuocMatController::class, 'filterHydroelectricLicense']);
+        Route::get('{loaiCongTrinh}/loc-giay-phep/{status}', [QuanLyCapPhepController::class, 'filterLicense']);
 
 
         // THONG TIN CONG TRINH TREN BAN DO

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ThuyDienTaiLieu extends Model
 {
     use HasFactory;
+
+    public $table = "nuocmat__thuydien__tailieu";
+
 }
